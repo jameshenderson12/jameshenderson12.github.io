@@ -1,0 +1,377 @@
+---
+layout: default
+title: James Henderson's Development Lab
+description: A collection of tools, experiments, prototypes and resources.
+---
+
+<style>
+/* ---------------------------------------------------------
+   James Henderson GitHub Pages – Home
+   All styles are scoped to .jh-home so they don't interfere
+   with the Cayman theme or other pages.
+--------------------------------------------------------- */
+.jh-home {
+  --jh-teal: #157878;
+  --jh-teal-dark: #105e5e;
+  --jh-teal-soft: #e8f5f4;
+  --jh-ink: #24343a;
+  --jh-muted: #66777d;
+  --jh-line: #dfe8e8;
+  --jh-bg: #f7f9f9;
+  --jh-white: #ffffff;
+  --jh-radius: 16px;
+}
+
+.jh-home * { box-sizing: border-box; }
+
+.jh-home .intro {
+  position: relative;
+  overflow: hidden;
+  margin: -8px 0 30px;
+  padding: 34px;
+  border: 1px solid var(--jh-line);
+  border-radius: var(--jh-radius);
+  background: linear-gradient(135deg, #f1f8f8 0%, #ffffff 62%);
+}
+
+.jh-home .intro::after {
+  content: "";
+  position: absolute;
+  width: 190px;
+  height: 190px;
+  right: -65px;
+  top: -75px;
+  border-radius: 50%;
+  background: rgba(21,120,120,.08);
+}
+
+.jh-home .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 10px;
+  color: var(--jh-teal);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.jh-home .intro h2 {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 9px;
+  color: var(--jh-ink);
+  font-size: clamp(28px, 5vw, 42px);
+  line-height: 1.12;
+}
+
+.jh-home .intro p {
+  position: relative;
+  z-index: 1;
+  max-width: 720px;
+  margin: 0;
+  color: var(--jh-muted);
+  font-size: 17px;
+}
+
+.jh-home .section-heading {
+  margin: 0 0 14px;
+}
+
+.jh-home .section-heading h3 {
+  margin: 0 0 3px;
+  color: var(--jh-ink);
+  font-size: 24px;
+}
+
+.jh-home .section-heading p {
+  margin: 0;
+  color: var(--jh-muted);
+}
+
+.jh-home .area-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 34px;
+}
+
+.jh-home .area-card {
+  position: relative;
+  display: flex;
+  min-height: 205px;
+  overflow: hidden;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 24px;
+  border: 1px solid var(--jh-line);
+  border-radius: var(--jh-radius);
+  background: var(--jh-white);
+  color: inherit;
+  text-decoration: none;
+  box-shadow: 0 5px 18px rgba(20,55,55,.05);
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+.jh-home .area-card:hover,
+.jh-home .area-card:focus-visible {
+  color: inherit;
+  text-decoration: none;
+  transform: translateY(-4px);
+  border-color: rgba(21,120,120,.45);
+  box-shadow: 0 12px 28px rgba(20,55,55,.11);
+}
+
+.jh-home .area-art {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 112px;
+  overflow: hidden;
+  background: var(--jh-teal-soft);
+}
+
+.jh-home .area-art::before,
+.jh-home .area-art::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+}
+
+.jh-home .area-art::before {
+  width: 150px;
+  height: 150px;
+  right: -20px;
+  top: -70px;
+  background: rgba(21,120,120,.14);
+}
+
+.jh-home .area-art::after {
+  width: 100px;
+  height: 100px;
+  left: 35%;
+  top: 45px;
+  background: rgba(21,120,120,.08);
+}
+
+.jh-home .area-icon {
+  position: absolute;
+  z-index: 2;
+  left: 24px;
+  top: 23px;
+  display: grid;
+  width: 64px;
+  height: 64px;
+  place-items: center;
+  border-radius: 18px;
+  background: rgba(255,255,255,.92);
+  box-shadow: 0 5px 14px rgba(20,55,55,.08);
+  font-size: 31px;
+}
+
+.jh-home .area-content {
+  position: relative;
+  z-index: 3;
+  margin-top: 88px;
+}
+
+.jh-home .area-content h4 {
+  margin: 0 0 5px;
+  color: var(--jh-ink);
+  font-size: 21px;
+}
+
+.jh-home .area-content p {
+  margin: 0;
+  color: var(--jh-muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.jh-home .area-arrow {
+  position: absolute;
+  z-index: 4;
+  right: 20px;
+  bottom: 19px;
+  color: var(--jh-teal);
+  font-size: 22px;
+  font-weight: 700;
+  transition: transform .18s ease;
+}
+
+.jh-home .area-card:hover .area-arrow { transform: translateX(4px); }
+
+.jh-home .area-card.placeholder {
+  cursor: default;
+  background: #fbfcfc;
+  box-shadow: none;
+}
+
+.jh-home .area-card.placeholder:hover,
+.jh-home .area-card.placeholder:focus-visible {
+  transform: none;
+  border-color: var(--jh-line);
+  box-shadow: none;
+}
+
+.jh-home .placeholder .area-art { background: #f0f3f3; }
+.jh-home .placeholder .area-icon { filter: grayscale(.25); }
+
+.jh-home .coming-soon {
+  display: inline-block;
+  margin-top: 9px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #edf1f1;
+  color: var(--jh-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+.jh-home .quick-section {
+  padding: 22px;
+  border: 1px solid var(--jh-line);
+  border-radius: var(--jh-radius);
+  background: var(--jh-bg);
+}
+
+.jh-home .quick-links {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.jh-home .quick-link {
+  display: block;
+  padding: 13px 15px;
+  border: 1px solid var(--jh-line);
+  border-radius: 10px;
+  background: var(--jh-white);
+  color: var(--jh-teal);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.jh-home .quick-link:hover,
+.jh-home .quick-link:focus-visible {
+  color: var(--jh-teal-dark);
+  text-decoration: none;
+  border-color: rgba(21,120,120,.45);
+}
+
+.jh-home .about {
+  margin: 30px 0 0;
+  color: var(--jh-muted);
+  font-size: 14px;
+}
+
+@media (max-width: 700px) {
+  .jh-home .intro { padding: 25px 22px; }
+  .jh-home .area-grid { grid-template-columns: 1fr; }
+  .jh-home .quick-links { grid-template-columns: 1fr; }
+}
+
+@media print {
+  .jh-home .area-card { box-shadow: none; break-inside: avoid; }
+  .jh-home .intro { background: #fff; }
+}
+</style>
+
+<div class="jh-home">
+
+  <section class="intro" aria-labelledby="home-intro-title">
+    <div class="eyebrow">James Henderson · Development Lab</div>
+    <h2 id="home-intro-title">Things I've built, tested &amp; explored.</h2>
+    <p>
+      A growing collection of practical tools, prototypes, experiments and resources —
+      from learning technology and AI to games, immersive experiences and useful little utilities.
+    </p>
+  </section>
+
+  <div class="section-heading">
+    <h3>Explore by area</h3>
+    <p>Choose an area to see the tools, experiments and developments available to explore.</p>
+  </div>
+
+  <section class="area-grid" aria-label="Development and interest areas">
+
+    <a class="area-card" href="chatbots/">
+      <div class="area-art"><div class="area-icon" aria-hidden="true">💬</div></div>
+      <div class="area-content">
+        <h4>Chatbots &amp; AI</h4>
+        <p>Conversational interfaces, AI experiments, assistants and chatbot development.</p>
+      </div>
+      <div class="area-arrow" aria-hidden="true">→</div>
+    </a>
+
+    <a class="area-card" href="360%20video%20and%20XR/">
+      <div class="area-art"><div class="area-icon" aria-hidden="true">🥽</div></div>
+      <div class="area-content">
+        <h4>360 Video &amp; XR</h4>
+        <p>Immersive learning, virtual reality, 360° video and extended-reality experiments.</p>
+      </div>
+      <div class="area-arrow" aria-hidden="true">→</div>
+    </a>
+
+    <a class="area-card" href="school-costs/">
+      <div class="area-art"><div class="area-icon" aria-hidden="true">💷</div></div>
+      <div class="area-content">
+        <h4>Useful Tools</h4>
+        <p>Small web applications designed to solve practical problems and make life a little easier.</p>
+      </div>
+      <div class="area-arrow" aria-hidden="true">→</div>
+    </a>
+
+    <div class="area-card placeholder" aria-label="Games and interactive projects coming soon">
+      <div class="area-art"><div class="area-icon" aria-hidden="true">🎮</div></div>
+      <div class="area-content">
+        <h4>Games &amp; Interactive</h4>
+        <p>Game development, interactive prototypes, playful experiments and things built for fun.</p>
+        <span class="coming-soon">More coming soon</span>
+      </div>
+    </div>
+
+    <div class="area-card placeholder" aria-label="Learning technology resources coming soon">
+      <div class="area-art"><div class="area-icon" aria-hidden="true">📚</div></div>
+      <div class="area-content">
+        <h4>Learning Technology</h4>
+        <p>Resources, experiments and examples from e-learning, LMS platforms and digital learning.</p>
+        <span class="coming-soon">More coming soon</span>
+      </div>
+    </div>
+
+    <div class="area-card placeholder" aria-label="Experiments and prototypes coming soon">
+      <div class="area-art"><div class="area-icon" aria-hidden="true">🧪</div></div>
+      <div class="area-content">
+        <h4>Experiments &amp; Prototypes</h4>
+        <p>Interesting ideas, proof-of-concepts and technical experiments that don't quite fit elsewhere.</p>
+        <span class="coming-soon">More coming soon</span>
+      </div>
+    </div>
+
+  </section>
+
+  <section class="quick-section" aria-labelledby="quick-title">
+    <div class="section-heading">
+      <h3 id="quick-title">Jump straight in</h3>
+      <p>Some of the projects currently available on the site.</p>
+    </div>
+
+    <div class="quick-links">
+      <a class="quick-link" href="school-costs/">School Costs Planner →</a>
+      <a class="quick-link" href="chatbots/">Developing Chatbots with Rasa →</a>
+      <a class="quick-link" href="360%20video%20and%20XR/">360 Video &amp; XR Resources →</a>
+    </div>
+  </section>
+
+  <p class="about">
+    <strong>About this site:</strong> These pages are primarily a development playground —
+    a place to build, test and prototype ideas, with selected projects made available for others to use or explore.
+  </p>
+
+</div>
