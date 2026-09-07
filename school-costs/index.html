@@ -1,0 +1,2532 @@
+---
+layout: default
+title: School Costs Planner
+---
+
+<style>
+    /* =====================================================
+       SCHOOL COSTS PLANNER
+       Styles are scoped to .school-costs-app so they don't
+       affect the rest of the Jekyll/Cayman website.
+    ===================================================== */
+
+    .school-costs-app {
+        --scp-primary: #315c7d;
+        --scp-primary-dark: #24465f;
+        --scp-primary-light: #eaf2f7;
+        --scp-accent: #5f8fa8;
+        --scp-warning: #fff4d6;
+        --scp-danger: #a94442;
+        --scp-text: #263238;
+        --scp-muted: #68747c;
+        --scp-border: #d9e0e5;
+        --scp-background: #f4f7f9;
+        --scp-white: #ffffff;
+        --scp-radius: 12px;
+        --scp-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+
+        max-width: 1200px;
+        margin: 0 auto;
+        color: var(--scp-text);
+        line-height: 1.5;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .school-costs-app *,
+    .school-costs-app *::before,
+    .school-costs-app *::after {
+        box-sizing: border-box;
+    }
+
+    /* Intro */
+
+    .scp-intro {
+        background: var(--scp-primary-light);
+        border: 1px solid #cbdde8;
+        border-left: 5px solid var(--scp-primary);
+        border-radius: var(--scp-radius);
+        padding: 20px 22px;
+        margin-bottom: 20px;
+    }
+
+    .scp-intro p {
+        margin: 0;
+        color: var(--scp-text);
+    }
+
+    .scp-intro p + p {
+        margin-top: 8px;
+    }
+
+    /* Sections */
+
+    .school-costs-app .section {
+        background: var(--scp-white);
+        border: 1px solid var(--scp-border);
+        border-radius: var(--scp-radius);
+        box-shadow: var(--scp-shadow);
+        padding: 22px;
+        margin-bottom: 18px;
+    }
+
+    .school-costs-app .section-header {
+        margin-bottom: 18px;
+    }
+
+    .school-costs-app .section-header h2 {
+        margin: 0 0 5px;
+        color: var(--scp-primary-dark);
+        font-size: 21px;
+        line-height: 1.3;
+    }
+
+    .school-costs-app .section-header p {
+        margin: 0;
+        color: var(--scp-muted);
+        font-size: 14px;
+    }
+
+    .school-costs-app .section-header p + p {
+        margin-top: 8px;
+    }
+
+    /* Fields */
+
+    .school-costs-app .field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .school-costs-app label {
+        font-size: 13px;
+        color: var(--scp-primary-dark);
+    }
+
+    .school-costs-app input[type="text"],
+    .school-costs-app input[type="number"],
+    .school-costs-app select {
+        width: 100%;
+        min-height: 40px;
+        border: 1px solid var(--scp-border);
+        border-radius: 7px;
+        padding: 8px 10px;
+        background: var(--scp-white);
+        color: var(--scp-text);
+        font: inherit;
+    }
+
+    .school-costs-app input:focus,
+    .school-costs-app select:focus {
+        outline: 2px solid rgba(49, 92, 125, 0.18);
+        border-color: var(--scp-primary);
+    }
+
+    /* Buttons */
+
+    .school-costs-app .button {
+        border: 0;
+        border-radius: 7px;
+        padding: 9px 14px;
+        min-height: 40px;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+        background: var(--scp-primary);
+        color: var(--scp-white);
+    }
+
+    .school-costs-app .button:hover {
+        background: var(--scp-primary-dark);
+    }
+
+    .school-costs-app .button-secondary {
+        background: var(--scp-primary-light);
+        color: var(--scp-primary-dark);
+    }
+
+    .school-costs-app .button-secondary:hover {
+        background: #dcebf3;
+    }
+
+    .school-costs-app .button-danger {
+        background: #f8e8e7;
+        color: var(--scp-danger);
+    }
+
+    .school-costs-app .button-danger:hover {
+        background: #f2d8d6;
+    }
+
+    .school-costs-app .button-small {
+        min-height: 36px;
+        padding: 7px 11px;
+        font-size: 13px;
+    }
+
+    /* Children */
+
+    .school-costs-app .children-list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .school-costs-app .child-row {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 16px;
+        background: #fafbfc;
+        border: 1px solid var(--scp-border);
+        border-radius: 10px;
+    }
+
+    .school-costs-app .child-name-field {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .school-costs-app .child-number {
+        margin-bottom: 4px;
+        color: var(--scp-primary);
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+
+    .school-costs-app .child-actions {
+        flex: 0 0 auto;
+        padding-top: 22px;
+    }
+
+    .school-costs-app .children-actions {
+        margin-top: 14px;
+    }
+
+    /* Attendance */
+
+    .school-costs-app .attendance-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .school-costs-app .attendance-table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 720px;
+    }
+
+    .school-costs-app .attendance-table th,
+    .school-costs-app .attendance-table td {
+        border: 1px solid var(--scp-border);
+        padding: 10px;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .school-costs-app .attendance-table th {
+        background: var(--scp-primary-light);
+        color: var(--scp-primary-dark);
+        font-size: 13px;
+    }
+
+    .school-costs-app .attendance-table th:first-child,
+    .school-costs-app .attendance-table td:first-child {
+        text-align: left;
+        min-width: 180px;
+    }
+
+    .school-costs-app .attendance-child-name,
+    .school-costs-app .attendance-card-name {
+        font-weight: 700;
+        color: var(--scp-primary-dark);
+    }
+
+    .school-costs-app .attendance-child-copy {
+        margin-top: 8px;
+    }
+
+    .school-costs-app .attendance-child-copy-inner {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: wrap;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--scp-primary-dark);
+    }
+
+    .school-costs-app .attendance-child-copy input[type="checkbox"] {
+        width: 17px;
+        height: 17px;
+        margin: 0;
+        cursor: pointer;
+        flex: 0 0 auto;
+    }
+
+    .school-costs-app .attendance-child-copy select {
+        width: auto;
+        min-width: 110px;
+        min-height: 34px;
+        padding: 5px 8px;
+        font-size: 13px;
+    }
+
+    .school-costs-app .meal-checkbox {
+        width: 19px;
+        height: 19px;
+        cursor: pointer;
+    }
+
+    .school-costs-app .acorns-select {
+        min-width: 135px;
+        font-size: 13px;
+    }
+
+    /* Mobile attendance cards */
+
+    .school-costs-app .mobile-attendance {
+        display: none;
+    }
+
+    .school-costs-app .attendance-card {
+        border: 1px solid var(--scp-border);
+        border-radius: 10px;
+        padding: 14px;
+        margin-bottom: 12px;
+        background: #fafbfc;
+    }
+
+    .school-costs-app .attendance-card:last-child {
+        margin-bottom: 0;
+    }
+
+    .school-costs-app .attendance-card-name {
+        margin-bottom: 8px;
+    }
+
+    .school-costs-app .attendance-day {
+        display: grid;
+        grid-template-columns: 95px 1fr;
+        align-items: center;
+        gap: 10px;
+        padding: 7px 0;
+        border-top: 1px solid var(--scp-border);
+    }
+
+    .school-costs-app .attendance-day:first-of-type {
+        border-top: 0;
+    }
+
+    .school-costs-app .attendance-day-label {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--scp-muted);
+    }
+
+    .school-costs-app .mobile-attendance .attendance-child-copy {
+        margin-bottom: 10px;
+    }
+
+    /* Clubs */
+
+    .school-costs-app .club-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .school-costs-app .club-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 150px minmax(180px, 220px) auto;
+        gap: 12px;
+        align-items: end;
+        padding: 14px;
+        background: #fafbfc;
+        border: 1px solid var(--scp-border);
+        border-radius: 10px;
+    }
+
+    .school-costs-app .club-actions {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .school-costs-app .club-empty {
+        padding: 14px;
+        border: 1px dashed var(--scp-border);
+        border-radius: 9px;
+        color: var(--scp-muted);
+        font-size: 14px;
+        background: #fafbfc;
+    }
+
+    /* Period */
+
+    .school-costs-app .period-grid {
+        display: grid;
+        grid-template-columns: minmax(200px, 280px);
+        gap: 14px;
+    }
+
+    .school-costs-app .weeks-help {
+        color: var(--scp-muted);
+        font-size: 13px;
+    }
+
+    /* Estimate */
+
+    .school-costs-app .estimate-box {
+        background: var(--scp-primary-light);
+        border: 1px solid #cbdde8;
+        border-radius: 10px;
+        padding: 18px;
+    }
+
+    .school-costs-app .estimate-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .school-costs-app .estimate-item {
+        background: var(--scp-white);
+        border: 1px solid var(--scp-border);
+        border-radius: 9px;
+        padding: 14px;
+    }
+
+    .school-costs-app .estimate-label {
+        color: var(--scp-muted);
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        margin-bottom: 4px;
+    }
+
+    .school-costs-app .estimate-value {
+        color: var(--scp-primary-dark);
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .school-costs-app .estimate-total {
+        margin-top: 14px;
+        padding: 18px;
+        border-radius: 10px;
+        background: var(--scp-primary);
+        color: var(--scp-white);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .school-costs-app .estimate-total-label {
+        font-size: 15px;
+        font-weight: 700;
+    }
+
+    .school-costs-app .estimate-total-value {
+        font-size: 28px;
+        font-weight: 700;
+    }
+
+    .school-costs-app .actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 18px;
+    }
+
+    .school-costs-app .note {
+        padding: 12px 14px;
+        border-radius: 8px;
+        background: var(--scp-warning);
+        color: #665321;
+        font-size: 13px;
+        margin-top: 14px;
+    }
+
+    /* Mobile */
+
+    @media (max-width: 900px) {
+
+        .school-costs-app .club-row {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .school-costs-app .club-actions {
+            justify-content: flex-start;
+        }
+
+        .school-costs-app .estimate-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @media (max-width: 700px) {
+
+        .school-costs-app .section {
+            padding: 16px;
+        }
+
+        .school-costs-app .children-list {
+            grid-template-columns: 1fr;
+        }
+
+        .school-costs-app .attendance-wrapper {
+            display: none;
+        }
+
+        .school-costs-app .mobile-attendance {
+            display: block;
+        }
+
+        .school-costs-app .club-row {
+            grid-template-columns: 1fr;
+        }
+
+        .school-costs-app .estimate-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    @media (max-width: 480px) {
+
+        .school-costs-app .child-row {
+            flex-direction: column;
+        }
+
+        .school-costs-app .child-actions {
+            padding-top: 0;
+            align-self: flex-end;
+        }
+
+        .school-costs-app .estimate-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .school-costs-app .estimate-total {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
+        }
+
+        .school-costs-app .actions {
+            flex-direction: column;
+        }
+
+        .school-costs-app .actions .button {
+            width: 100%;
+        }
+    }
+
+    /* Print */
+
+    @media print {
+
+        .school-costs-app {
+            max-width: none;
+        }
+
+        .school-costs-app .section {
+            box-shadow: none;
+            break-inside: avoid;
+        }
+
+        .school-costs-app .children-actions,
+        .school-costs-app .child-actions,
+        .school-costs-app .club-actions,
+        .school-costs-app .actions,
+        .school-costs-app .child-copy-controls {
+            display: none !important;
+        }
+
+        .school-costs-app .attendance-wrapper {
+            display: block !important;
+            overflow: visible;
+        }
+
+        .school-costs-app .mobile-attendance {
+            display: none !important;
+        }
+
+        .school-costs-app .attendance-table {
+            min-width: 0;
+        }
+
+        .school-costs-app .club-row {
+            grid-template-columns: 1fr 120px 180px;
+        }
+
+        .school-costs-app .estimate-total {
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        /*
+           Hide the Cayman site navigation/header when printing,
+           leaving the calculator as the printable document.
+        */
+        .page-header,
+        .site-footer {
+            display: none !important;
+        }
+
+        .main-content {
+            max-width: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+    }
+</style>
+
+
+<div class="school-costs-app">
+
+    <div class="scp-intro">
+        <p>
+            Use this planner to estimate the cost of school meals,
+            Acorns wraparound care and additional termly clubs for your children.
+        </p>
+
+        <p>
+            Choose the arrangements that apply to each child, then select the
+            number of school weeks you would like to estimate.
+        </p>
+    </div>
+
+
+    <!-- CHILDREN -->
+
+    <section class="section">
+
+        <div class="section-header">
+            <h2>🦱 Your Children</h2>
+            <p>
+                Add up to four children to include their individual arrangements
+                in the estimate.
+            </p>
+        </div>
+
+        <div id="childrenList" class="children-list"></div>
+
+        <div class="children-actions">
+            <button
+                type="button"
+                class="button button-secondary"
+                id="addChildButton"
+            >
+                + Add another child
+            </button>
+        </div>
+
+    </section>
+
+
+    <!-- SCHOOL MEALS -->
+
+    <section class="section">
+
+        <div class="section-header">
+            <h2>🍱 School Meals</h2>
+
+            <p>
+                School meals are charged at
+                <strong>£3.55 per meal/day</strong>.
+                Select the days each child requires a meal.
+            </p>
+        </div>
+
+        <div id="mealsDesktop" class="attendance-wrapper"></div>
+
+        <div id="mealsMobile" class="mobile-attendance"></div>
+
+    </section>
+
+
+    <!-- ACORNS -->
+
+    <section class="section">
+
+        <div class="section-header">
+
+            <h2>🏫 Acorns Wraparound Care</h2>
+
+            <p>
+                Select the appropriate session for each child on each day.
+            </p>
+
+            <p>
+                <strong>Breakfast Club:</strong>
+                07:30–08:45 = <strong>£5.00</strong> including breakfast,
+                or 08:15–08:45 = <strong>£3.00</strong> without breakfast.
+            </p>
+
+            <p>
+                <strong>After-School Club:</strong>
+                15:15–17:00 = <strong>£10.00</strong>,
+                or 15:15–18:00 = <strong>£12.00</strong>.
+            </p>
+
+        </div>
+
+
+        <h3 style="margin:0 0 12px; color:#24465f; font-size:17px;">
+            Breakfast Club (AM)
+        </h3>
+
+        <div id="amDesktop" class="attendance-wrapper"></div>
+
+        <div id="amMobile" class="mobile-attendance"></div>
+
+
+        <div style="height:24px;"></div>
+
+
+        <h3 style="margin:0 0 12px; color:#24465f; font-size:17px;">
+            After-School Club (PM)
+        </h3>
+
+        <div id="pmDesktop" class="attendance-wrapper"></div>
+
+        <div id="pmMobile" class="mobile-attendance"></div>
+
+    </section>
+
+
+    <!-- ADDITIONAL CLUBS -->
+
+    <section class="section">
+
+        <div class="section-header">
+
+            <h2>🏃 Additional Termly Clubs</h2>
+
+            <p>
+                Add any additional clubs or activities charged per term.
+                These costs are added <strong>once</strong> and are not
+                multiplied by the number of weeks.
+            </p>
+
+        </div>
+
+        <div id="clubList" class="club-list"></div>
+
+        <div style="margin-top:14px;">
+
+            <button
+                type="button"
+                class="button button-secondary"
+                id="addClubButton"
+            >
+                + Add a club
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- PERIOD -->
+
+    <section class="section">
+
+        <div class="section-header">
+
+            <h2>📆 Estimate Period</h2>
+
+            <p>
+                Choose how many school weeks you would like the estimate to cover.
+            </p>
+
+        </div>
+
+        <div class="period-grid">
+
+            <div class="field">
+
+                <label for="weeksInput">
+                    Number of school weeks
+                </label>
+
+                <input
+                    type="number"
+                    id="weeksInput"
+                    min="1"
+                    max="52"
+                    value="1"
+                    step="1"
+                >
+
+                <div class="weeks-help">
+                    Enter between 1 and 52 weeks.
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ESTIMATE -->
+
+    <section class="section">
+
+        <div class="section-header">
+
+            <h2>💷 Your Estimate</h2>
+
+            <p>
+                Weekly costs are multiplied by the number of weeks selected above.
+                Termly clubs are added separately.
+            </p>
+
+        </div>
+
+
+        <div class="estimate-box">
+
+            <div class="estimate-grid">
+
+                <div class="estimate-item">
+
+                    <div class="estimate-label">
+                        Weekly Meals
+                    </div>
+
+                    <div
+                        class="estimate-value"
+                        id="weeklyMealsTotal"
+                    >
+                        £0.00
+                    </div>
+
+                </div>
+
+
+                <div class="estimate-item">
+
+                    <div class="estimate-label">
+                        Weekly Acorns (AM)
+                    </div>
+
+                    <div
+                        class="estimate-value"
+                        id="weeklyAmTotal"
+                    >
+                        £0.00
+                    </div>
+
+                </div>
+
+
+                <div class="estimate-item">
+
+                    <div class="estimate-label">
+                        Weekly Acorns (PM)
+                    </div>
+
+                    <div
+                        class="estimate-value"
+                        id="weeklyPmTotal"
+                    >
+                        £0.00
+                    </div>
+
+                </div>
+
+
+                <div class="estimate-item">
+
+                    <div class="estimate-label">
+                        Termly Clubs
+                    </div>
+
+                    <div
+                        class="estimate-value"
+                        id="termlyClubsTotal"
+                    >
+                        £0.00
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="estimate-total">
+
+                <div>
+
+                    <div class="estimate-total-label">
+                        Estimated Total
+                    </div>
+
+                    <div
+                        id="estimateWeeksText"
+                        style="font-size:13px; opacity:0.9;"
+                    >
+                        1 school week
+                    </div>
+
+                </div>
+
+                <div
+                    class="estimate-total-value"
+                    id="grandTotal"
+                >
+                    £0.00
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="note">
+
+            This is an estimate only. Actual charges may vary depending
+            on your school's billing arrangements.
+
+        </div>
+
+
+        <div class="actions">
+
+            <button
+                type="button"
+                class="button button-danger"
+                id="resetButton"
+            >
+                Reset planner
+            </button>
+
+            <button
+                type="button"
+                class="button button-secondary"
+                id="printButton"
+            >
+                Print / Save estimate
+            </button>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<script>
+
+const DAYS = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday"
+];
+
+const MAX_CHILDREN = 4;
+const DEFAULT_MEAL_COST = 3.55;
+
+const ACORNS_AM = {
+    none: {
+        label: "No session",
+        cost: 0
+    },
+    breakfast: {
+        label: "07:30–08:45",
+        cost: 5
+    },
+    early: {
+        label: "08:15–08:45",
+        cost: 3
+    }
+};
+
+const ACORNS_PM = {
+    none: {
+        label: "No session",
+        cost: 0
+    },
+    standard: {
+        label: "15:15–17:00",
+        cost: 10
+    },
+    late: {
+        label: "15:15–18:00",
+        cost: 12
+    }
+};
+
+let children = [];
+let clubs = [];
+
+let nextChildId = 1;
+let nextClubId = 1;
+
+let copySources = {
+    meals: {},
+    am: {},
+    pm: {}
+};
+
+
+/* -------------------------------------------------------
+   HELPERS
+------------------------------------------------------- */
+
+function money(value) {
+
+    return "£" + Number(value || 0).toFixed(2);
+
+}
+
+function escapeHTML(value) {
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+function getChild(id) {
+
+    return children.find(
+        child => child.id === Number(id)
+    );
+
+}
+
+function getChildLabel(child) {
+
+    if (!child) {
+        return "";
+    }
+
+    return child.name.trim();
+
+}
+
+
+/* -------------------------------------------------------
+   CHILDREN
+------------------------------------------------------- */
+
+function createChild() {
+
+    return {
+        id: nextChildId++,
+        name: "",
+        meals: {},
+        am: {},
+        pm: {}
+    };
+
+}
+
+function addChild() {
+
+    if (children.length >= MAX_CHILDREN) {
+        return;
+    }
+
+    children.push(createChild());
+
+    renderChildren();
+    rebuildAttendance();
+    renderClubs();
+    calculateEstimate();
+
+}
+
+function removeChild(childId) {
+
+    if (children.length <= 1) {
+
+        alert("At least one child must remain.");
+
+        return;
+    }
+
+    children = children.filter(
+        child => child.id !== childId
+    );
+
+    ["meals", "am", "pm"].forEach(type => {
+
+        delete copySources[type][childId];
+
+        Object.keys(copySources[type]).forEach(targetId => {
+
+            if (
+                Number(copySources[type][targetId]) === childId
+            ) {
+                delete copySources[type][targetId];
+            }
+
+        });
+
+    });
+
+    clubs = clubs.filter(
+        club => club.childId !== childId
+    );
+
+    renderChildren();
+    rebuildAttendance();
+    renderClubs();
+    calculateEstimate();
+
+}
+
+function updateChildName(childId, value) {
+
+    const child = getChild(childId);
+
+    if (!child) {
+        return;
+    }
+
+    child.name = value;
+
+    updateAttendanceNames();
+    updateClubChildSelectors();
+    rebuildCopyControls();
+
+}
+
+function renderChildren() {
+
+    const container =
+        document.getElementById("childrenList");
+
+    container.innerHTML = "";
+
+    children.forEach((child, index) => {
+
+        const row =
+            document.createElement("div");
+
+        row.className = "child-row";
+
+        row.innerHTML = `
+            <div class="child-name-field">
+
+                <div class="child-number">
+                    Child ${index + 1}
+                </div>
+
+                <div class="field">
+
+                    <label for="childName_${child.id}">
+                        Child's first name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="childName_${child.id}"
+                        value="${escapeHTML(child.name)}"
+                        placeholder="e.g. Sophie"
+                    >
+
+                </div>
+
+            </div>
+
+            <div class="child-actions">
+
+                <button
+                    type="button"
+                    class="button button-danger button-small remove-child-button"
+                >
+                    Remove
+                </button>
+
+            </div>
+        `;
+
+        const nameInput =
+            row.querySelector(
+                `#childName_${child.id}`
+            );
+
+        nameInput.addEventListener(
+            "input",
+            event => {
+
+                updateChildName(
+                    child.id,
+                    event.target.value
+                );
+
+            }
+        );
+
+        const removeButton =
+            row.querySelector(
+                ".remove-child-button"
+            );
+
+        removeButton.addEventListener(
+            "click",
+            () => removeChild(child.id)
+        );
+
+        container.appendChild(row);
+
+    });
+
+    document.getElementById("addChildButton").style.display =
+        children.length >= MAX_CHILDREN
+            ? "none"
+            : "inline-block";
+
+}
+
+function updateAttendanceNames() {
+
+    document
+        .querySelectorAll(
+            "[data-attendance-child-name]"
+        )
+        .forEach(element => {
+
+            const childId =
+                Number(
+                    element.dataset.attendanceChildName
+                );
+
+            const child = getChild(childId);
+
+            if (!child) {
+                return;
+            }
+
+            element.textContent =
+                getChildLabel(child);
+
+        });
+
+}
+
+
+/* -------------------------------------------------------
+   COPY CONTROLS
+------------------------------------------------------- */
+
+function getAvailableCopyChildren(childId) {
+
+    return children.filter(
+        child => child.id !== childId
+    );
+
+}
+
+function getCopySourceId(type, childId) {
+
+    const stored =
+        copySources[type][childId];
+
+    if (
+        stored &&
+        getChild(stored) &&
+        Number(stored) !== Number(childId)
+    ) {
+        return Number(stored);
+    }
+
+    const available =
+        getAvailableCopyChildren(childId);
+
+    return available.length
+        ? available[0].id
+        : null;
+
+}
+
+function getCopyControlHTML(type, childId) {
+
+    const available =
+        getAvailableCopyChildren(childId);
+
+    if (!available.length) {
+        return "";
+    }
+
+    const existingSource =
+        copySources[type][childId];
+
+    const defaultSource =
+        getCopySourceId(type, childId);
+
+    const checked =
+        Boolean(existingSource);
+
+    let sourceHTML = "";
+
+    if (children.length === 2) {
+
+        const source = available[0];
+
+        sourceHTML = `
+            <span class="copy-source-text">
+                ${escapeHTML(
+                    getChildLabel(source)
+                )}
+            </span>
+        `;
+
+    } else {
+
+        sourceHTML = `
+            <select
+                class="copy-source-select"
+                data-copy-source="${type}"
+                data-child-id="${childId}"
+            >
+                ${available.map(source => `
+                    <option
+                        value="${source.id}"
+                        ${
+                            Number(source.id) ===
+                            Number(defaultSource)
+                                ? "selected"
+                                : ""
+                        }
+                    >
+                        ${escapeHTML(
+                            getChildLabel(source)
+                        )}
+                    </option>
+                `).join("")}
+            </select>
+        `;
+
+    }
+
+    return `
+        <div class="attendance-child-copy">
+
+            <label class="attendance-child-copy-inner">
+
+                <input
+                    type="checkbox"
+                    class="copy-checkbox"
+                    data-copy-type="${type}"
+                    data-child-id="${childId}"
+                    ${checked ? "checked" : ""}
+                >
+
+                <span>Same as</span>
+
+                ${sourceHTML}
+
+            </label>
+
+        </div>
+    `;
+
+}
+
+function rebuildCopyControls() {
+
+    document
+        .querySelectorAll(
+            ".attendance-child-copy-container"
+        )
+        .forEach(container => {
+
+            const type =
+                container.dataset.copyType;
+
+            const childId =
+                Number(container.dataset.childId);
+
+            const childIndex =
+                children.findIndex(
+                    child => child.id === childId
+                );
+
+            if (childIndex === 0) {
+
+                container.innerHTML = "";
+
+                return;
+            }
+
+            container.innerHTML =
+                getCopyControlHTML(
+                    type,
+                    childId
+                );
+
+            attachCopyListeners(
+                container,
+                type,
+                childId
+            );
+
+        });
+
+}
+
+function attachCopyListeners(
+    container,
+    type,
+    childId
+) {
+
+    const checkbox =
+        container.querySelector(
+            ".copy-checkbox"
+        );
+
+    if (!checkbox) {
+        return;
+    }
+
+    const sourceSelect =
+        container.querySelector(
+            ".copy-source-select"
+        );
+
+    if (sourceSelect) {
+
+        sourceSelect.addEventListener(
+            "change",
+            () => {
+
+                if (checkbox.checked) {
+
+                    const sourceId =
+                        Number(sourceSelect.value);
+
+                    copySources[type][childId] =
+                        sourceId;
+
+                    copyArrangement(
+                        type,
+                        childId,
+                        sourceId
+                    );
+
+                }
+
+            }
+        );
+
+    }
+
+    checkbox.addEventListener(
+        "change",
+        () => {
+
+            if (checkbox.checked) {
+
+                let sourceId;
+
+                if (sourceSelect) {
+
+                    sourceId =
+                        Number(sourceSelect.value);
+
+                } else {
+
+                    sourceId =
+                        getAvailableCopyChildren(
+                            childId
+                        )[0]?.id;
+
+                }
+
+                if (!sourceId) {
+
+                    checkbox.checked = false;
+
+                    return;
+                }
+
+                copySources[type][childId] =
+                    sourceId;
+
+                copyArrangement(
+                    type,
+                    childId,
+                    sourceId
+                );
+
+            } else {
+
+                delete copySources[type][childId];
+
+            }
+
+        }
+    );
+
+}
+
+function copyArrangement(
+    type,
+    targetChildId,
+    sourceChildId
+) {
+
+    const target =
+        getChild(targetChildId);
+
+    const source =
+        getChild(sourceChildId);
+
+    if (!target || !source) {
+        return;
+    }
+
+    target[type] =
+        JSON.parse(
+            JSON.stringify(source[type])
+        );
+
+    rebuildAttendance();
+    calculateEstimate();
+
+}
+
+
+/* -------------------------------------------------------
+   SCHOOL MEALS
+------------------------------------------------------- */
+
+function buildMealDesktop() {
+
+    let html = `
+        <table class="attendance-table">
+
+            <thead>
+                <tr>
+                    <th>Child</th>
+                    ${DAYS.map(
+                        day => `<th>${day}</th>`
+                    ).join("")}
+                </tr>
+            </thead>
+
+            <tbody>
+    `;
+
+    children.forEach(child => {
+
+        html += `
+            <tr>
+
+                <td>
+
+                    <div
+                        class="attendance-child-name"
+                        data-attendance-child-name="${child.id}"
+                    >
+                        ${escapeHTML(
+                            getChildLabel(child)
+                        )}
+                    </div>
+
+                    <div
+                        class="attendance-child-copy-container"
+                        data-copy-type="meals"
+                        data-child-id="${child.id}"
+                    >
+                        ${
+                            child.id !== children[0]?.id
+                                ? getCopyControlHTML(
+                                    "meals",
+                                    child.id
+                                )
+                                : ""
+                        }
+                    </div>
+
+                </td>
+
+                ${DAYS.map(day => `
+                    <td>
+                        <input
+                            type="checkbox"
+                            class="meal-checkbox"
+                            data-child-id="${child.id}"
+                            data-day="${day}"
+                            ${
+                                child.meals[day]
+                                    ? "checked"
+                                    : ""
+                            }
+                        >
+                    </td>
+                `).join("")}
+
+            </tr>
+        `;
+
+    });
+
+    html += `
+            </tbody>
+        </table>
+    `;
+
+    return html;
+
+}
+
+function buildMealMobile() {
+
+    return children.map(child => {
+
+        return `
+            <div class="attendance-card">
+
+                <div
+                    class="attendance-card-name"
+                    data-attendance-child-name="${child.id}"
+                >
+                    ${escapeHTML(
+                        getChildLabel(child)
+                    )}
+                </div>
+
+                <div
+                    class="attendance-child-copy-container"
+                    data-copy-type="meals"
+                    data-child-id="${child.id}"
+                >
+                    ${
+                        child.id !== children[0]?.id
+                            ? getCopyControlHTML(
+                                "meals",
+                                child.id
+                            )
+                            : ""
+                    }
+                </div>
+
+                ${DAYS.map(day => `
+                    <div class="attendance-day">
+
+                        <div class="attendance-day-label">
+                            ${day}
+                        </div>
+
+                        <div>
+                            <input
+                                type="checkbox"
+                                class="meal-checkbox"
+                                data-child-id="${child.id}"
+                                data-day="${day}"
+                                ${
+                                    child.meals[day]
+                                        ? "checked"
+                                        : ""
+                                }
+                            >
+                        </div>
+
+                    </div>
+                `).join("")}
+
+            </div>
+        `;
+
+    }).join("");
+
+}
+
+function updateMeal(
+    childId,
+    day,
+    checked
+) {
+
+    const child =
+        getChild(childId);
+
+    if (!child) {
+        return;
+    }
+
+    child.meals[day] =
+        checked;
+
+    calculateEstimate();
+
+}
+
+function attachMealListeners() {
+
+    document
+        .querySelectorAll(".meal-checkbox")
+        .forEach(checkbox => {
+
+            checkbox.addEventListener(
+                "change",
+                event => {
+
+                    updateMeal(
+                        Number(
+                            event.target.dataset.childId
+                        ),
+                        event.target.dataset.day,
+                        event.target.checked
+                    );
+
+                }
+            );
+
+        });
+
+}
+
+
+/* -------------------------------------------------------
+   ACORNS
+------------------------------------------------------- */
+
+function buildAcornsDesktop(
+    type,
+    options
+) {
+
+    let html = `
+        <table class="attendance-table">
+
+            <thead>
+                <tr>
+                    <th>Child</th>
+                    ${DAYS.map(
+                        day => `<th>${day}</th>`
+                    ).join("")}
+                </tr>
+            </thead>
+
+            <tbody>
+    `;
+
+    children.forEach(child => {
+
+        html += `
+            <tr>
+
+                <td>
+
+                    <div
+                        class="attendance-child-name"
+                        data-attendance-child-name="${child.id}"
+                    >
+                        ${escapeHTML(
+                            getChildLabel(child)
+                        )}
+                    </div>
+
+                    <div
+                        class="attendance-child-copy-container"
+                        data-copy-type="${type}"
+                        data-child-id="${child.id}"
+                    >
+                        ${
+                            child.id !== children[0]?.id
+                                ? getCopyControlHTML(
+                                    type,
+                                    child.id
+                                )
+                                : ""
+                        }
+                    </div>
+
+                </td>
+
+                ${DAYS.map(day => `
+                    <td>
+                        ${buildAcornsSelect(
+                            child,
+                            type,
+                            day,
+                            options
+                        )}
+                    </td>
+                `).join("")}
+
+            </tr>
+        `;
+
+    });
+
+    html += `
+            </tbody>
+        </table>
+    `;
+
+    return html;
+
+}
+
+function buildAcornsMobile(
+    type,
+    options
+) {
+
+    return children.map(child => {
+
+        return `
+            <div class="attendance-card">
+
+                <div
+                    class="attendance-card-name"
+                    data-attendance-child-name="${child.id}"
+                >
+                    ${escapeHTML(
+                        getChildLabel(child)
+                    )}
+                </div>
+
+                <div
+                    class="attendance-child-copy-container"
+                    data-copy-type="${type}"
+                    data-child-id="${child.id}"
+                >
+                    ${
+                        child.id !== children[0]?.id
+                            ? getCopyControlHTML(
+                                type,
+                                child.id
+                            )
+                            : ""
+                    }
+                </div>
+
+                ${DAYS.map(day => {
+
+                    return `
+                        <div class="attendance-day">
+
+                            <div class="attendance-day-label">
+                                ${day}
+                            </div>
+
+                            <div>
+                                ${buildAcornsSelect(
+                                    child,
+                                    type,
+                                    day,
+                                    options
+                                )}
+                            </div>
+
+                        </div>
+                    `;
+
+                }).join("")}
+
+            </div>
+        `;
+
+    }).join("");
+
+}
+
+function buildAcornsSelect(
+    child,
+    type,
+    day,
+    options
+) {
+
+    const current =
+        child[type][day] || "none";
+
+    return `
+        <select
+            class="acorns-select"
+            data-child-id="${child.id}"
+            data-day="${day}"
+            data-acorns-type="${type}"
+        >
+
+            ${Object.entries(options)
+                .map(([key, option]) => `
+                    <option
+                        value="${key}"
+                        ${
+                            key === current
+                                ? "selected"
+                                : ""
+                        }
+                    >
+                        ${escapeHTML(
+                            option.label
+                        )}
+                    </option>
+                `)
+                .join("")}
+
+        </select>
+    `;
+
+}
+
+function updateAcorns(
+    childId,
+    type,
+    day,
+    value
+) {
+
+    const child =
+        getChild(childId);
+
+    if (!child) {
+        return;
+    }
+
+    child[type][day] =
+        value;
+
+    calculateEstimate();
+
+}
+
+function attachAcornsListeners() {
+
+    document
+        .querySelectorAll(".acorns-select")
+        .forEach(select => {
+
+            select.addEventListener(
+                "change",
+                event => {
+
+                    updateAcorns(
+                        Number(
+                            event.target.dataset.childId
+                        ),
+                        event.target.dataset.acornsType,
+                        event.target.dataset.day,
+                        event.target.value
+                    );
+
+                }
+            );
+
+        });
+
+}
+
+
+/* -------------------------------------------------------
+   REBUILD ATTENDANCE
+------------------------------------------------------- */
+
+function rebuildAttendance() {
+
+    document.getElementById(
+        "mealsDesktop"
+    ).innerHTML =
+        buildMealDesktop();
+
+    document.getElementById(
+        "mealsMobile"
+    ).innerHTML =
+        buildMealMobile();
+
+    document.getElementById(
+        "amDesktop"
+    ).innerHTML =
+        buildAcornsDesktop(
+            "am",
+            ACORNS_AM
+        );
+
+    document.getElementById(
+        "amMobile"
+    ).innerHTML =
+        buildAcornsMobile(
+            "am",
+            ACORNS_AM
+        );
+
+    document.getElementById(
+        "pmDesktop"
+    ).innerHTML =
+        buildAcornsDesktop(
+            "pm",
+            ACORNS_PM
+        );
+
+    document.getElementById(
+        "pmMobile"
+    ).innerHTML =
+        buildAcornsMobile(
+            "pm",
+            ACORNS_PM
+        );
+
+    attachMealListeners();
+    attachAcornsListeners();
+    rebuildCopyControls();
+
+}
+
+
+/* -------------------------------------------------------
+   CLUBS
+------------------------------------------------------- */
+
+function addClub() {
+
+    clubs.push({
+
+        id: nextClubId++,
+        name: "",
+        cost: 0,
+        childId:
+            children[0]?.id || null
+
+    });
+
+    renderClubs();
+    calculateEstimate();
+
+}
+
+function removeClub(clubId) {
+
+    clubs = clubs.filter(
+        club => club.id !== Number(clubId)
+    );
+
+    renderClubs();
+    calculateEstimate();
+
+}
+
+function getClubChildOptions(
+    selectedChildId
+) {
+
+    return children.map(child => `
+        <option
+            value="${child.id}"
+            ${
+                Number(child.id) ===
+                Number(selectedChildId)
+                    ? "selected"
+                    : ""
+            }
+        >
+            ${escapeHTML(
+                getChildLabel(child)
+            )}
+        </option>
+    `).join("");
+
+}
+
+function renderClubs() {
+
+    const container =
+        document.getElementById(
+            "clubList"
+        );
+
+    if (!clubs.length) {
+
+        container.innerHTML = `
+            <div class="club-empty">
+                No additional termly clubs have been added.
+            </div>
+        `;
+
+        return;
+    }
+
+    container.innerHTML =
+        clubs.map(club => `
+
+        <div class="club-row">
+
+            <div class="field">
+
+                <label for="clubName_${club.id}">
+                    Club / activity
+                </label>
+
+                <input
+                    type="text"
+                    id="clubName_${club.id}"
+                    value="${escapeHTML(club.name)}"
+                    placeholder="e.g. Jan's PT Bootcamp"
+                    data-club-name="${club.id}"
+                >
+
+            </div>
+
+            <div class="field">
+
+                <label for="clubCost_${club.id}">
+                    Cost per term
+                </label>
+
+                <input
+                    type="number"
+                    id="clubCost_${club.id}"
+                    value="${club.cost || ""}"
+                    min="0"
+                    step="0.01"
+                    placeholder="0.00"
+                    data-club-cost="${club.id}"
+                >
+
+            </div>
+
+            <div class="field">
+
+                <label for="clubChild_${club.id}">
+                    Child
+                </label>
+
+                <select
+                    id="clubChild_${club.id}"
+                    data-club-child="${club.id}"
+                >
+                    ${getClubChildOptions(
+                        club.childId
+                    )}
+                </select>
+
+            </div>
+
+            <div class="club-actions">
+
+                <button
+                    type="button"
+                    class="button button-danger button-small remove-club-button"
+                    data-club-id="${club.id}"
+                >
+                    Remove
+                </button>
+
+            </div>
+
+        </div>
+
+    `).join("");
+
+    container
+        .querySelectorAll("[data-club-name]")
+        .forEach(input => {
+
+            input.addEventListener(
+                "input",
+                event => {
+
+                    const clubId =
+                        Number(
+                            event.target.dataset.clubName
+                        );
+
+                    const club =
+                        clubs.find(
+                            item =>
+                                item.id === clubId
+                        );
+
+                    if (!club) {
+                        return;
+                    }
+
+                    club.name =
+                        event.target.value;
+
+                    calculateEstimate();
+
+                }
+            );
+
+        });
+
+    container
+        .querySelectorAll("[data-club-cost]")
+        .forEach(input => {
+
+            input.addEventListener(
+                "input",
+                event => {
+
+                    const clubId =
+                        Number(
+                            event.target.dataset.clubCost
+                        );
+
+                    const club =
+                        clubs.find(
+                            item =>
+                                item.id === clubId
+                        );
+
+                    if (!club) {
+                        return;
+                    }
+
+                    club.cost =
+                        Math.max(
+                            0,
+                            Number(
+                                event.target.value
+                            ) || 0
+                        );
+
+                    calculateEstimate();
+
+                }
+            );
+
+        });
+
+    container
+        .querySelectorAll("[data-club-child]")
+        .forEach(select => {
+
+            select.addEventListener(
+                "change",
+                event => {
+
+                    const clubId =
+                        Number(
+                            event.target.dataset.clubChild
+                        );
+
+                    const club =
+                        clubs.find(
+                            item =>
+                                item.id === clubId
+                        );
+
+                    if (!club) {
+                        return;
+                    }
+
+                    club.childId =
+                        Number(
+                            event.target.value
+                        );
+
+                    calculateEstimate();
+
+                }
+            );
+
+        });
+
+    container
+        .querySelectorAll(
+            ".remove-club-button"
+        )
+        .forEach(button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    removeClub(
+                        Number(
+                            button.dataset.clubId
+                        )
+                    );
+
+                }
+            );
+
+        });
+
+}
+
+function updateClubChildSelectors() {
+
+    document
+        .querySelectorAll("[data-club-child]")
+        .forEach(select => {
+
+            const clubId =
+                Number(
+                    select.dataset.clubChild
+                );
+
+            const club =
+                clubs.find(
+                    item =>
+                        item.id === clubId
+                );
+
+            if (!club) {
+                return;
+            }
+
+            select.innerHTML =
+                getClubChildOptions(
+                    club.childId
+                );
+
+        });
+
+}
+
+
+/* -------------------------------------------------------
+   CALCULATION
+------------------------------------------------------- */
+
+function calculateWeeklyMeals() {
+
+    let total = 0;
+
+    children.forEach(child => {
+
+        DAYS.forEach(day => {
+
+            if (child.meals[day]) {
+                total += DEFAULT_MEAL_COST;
+            }
+
+        });
+
+    });
+
+    return total;
+
+}
+
+function calculateWeeklyAcorns(
+    type,
+    options
+) {
+
+    let total = 0;
+
+    children.forEach(child => {
+
+        DAYS.forEach(day => {
+
+            const value =
+                child[type][day] ||
+                "none";
+
+            if (options[value]) {
+                total +=
+                    options[value].cost;
+            }
+
+        });
+
+    });
+
+    return total;
+
+}
+
+function calculateTermlyClubs() {
+
+    return clubs.reduce(
+        (total, club) =>
+            total +
+            (Number(club.cost) || 0),
+        0
+    );
+
+}
+
+function calculateEstimate() {
+
+    const weeksInput =
+        document.getElementById(
+            "weeksInput"
+        );
+
+    let weeks =
+        Number(
+            weeksInput.value
+        ) || 1;
+
+    weeks =
+        Math.max(
+            1,
+            Math.min(
+                52,
+                Math.round(weeks)
+            )
+        );
+
+    weeksInput.value =
+        weeks;
+
+    const weeklyMeals =
+        calculateWeeklyMeals();
+
+    const weeklyAm =
+        calculateWeeklyAcorns(
+            "am",
+            ACORNS_AM
+        );
+
+    const weeklyPm =
+        calculateWeeklyAcorns(
+            "pm",
+            ACORNS_PM
+        );
+
+    const termlyClubs =
+        calculateTermlyClubs();
+
+    const weeklyRecurring =
+        weeklyMeals +
+        weeklyAm +
+        weeklyPm;
+
+    const recurringTotal =
+        weeklyRecurring *
+        weeks;
+
+    const grandTotal =
+        recurringTotal +
+        termlyClubs;
+
+    document.getElementById(
+        "weeklyMealsTotal"
+    ).textContent =
+        money(weeklyMeals);
+
+    document.getElementById(
+        "weeklyAmTotal"
+    ).textContent =
+        money(weeklyAm);
+
+    document.getElementById(
+        "weeklyPmTotal"
+    ).textContent =
+        money(weeklyPm);
+
+    document.getElementById(
+        "termlyClubsTotal"
+    ).textContent =
+        money(termlyClubs);
+
+    document.getElementById(
+        "grandTotal"
+    ).textContent =
+        money(grandTotal);
+
+    document.getElementById(
+        "estimateWeeksText"
+    ).textContent =
+        weeks === 1
+            ? "1 school week"
+            : `${weeks} school weeks`;
+
+}
+
+
+/* -------------------------------------------------------
+   RESET
+------------------------------------------------------- */
+
+function resetPlanner() {
+
+    const confirmed =
+        confirm(
+            "Are you sure you want to reset the planner?"
+        );
+
+    if (!confirmed) {
+        return;
+    }
+
+    children = [];
+    clubs = [];
+
+    nextChildId = 1;
+    nextClubId = 1;
+
+    copySources = {
+        meals: {},
+        am: {},
+        pm: {}
+    };
+
+    document.getElementById(
+        "weeksInput"
+    ).value = 1;
+
+    addChild();
+
+    renderClubs();
+    calculateEstimate();
+
+}
+
+
+/* -------------------------------------------------------
+   EVENT LISTENERS
+------------------------------------------------------- */
+
+document.getElementById(
+    "addChildButton"
+).addEventListener(
+    "click",
+    addChild
+);
+
+document.getElementById(
+    "addClubButton"
+).addEventListener(
+    "click",
+    addClub
+);
+
+document.getElementById(
+    "weeksInput"
+).addEventListener(
+    "input",
+    calculateEstimate
+);
+
+document.getElementById(
+    "resetButton"
+).addEventListener(
+    "click",
+    resetPlanner
+);
+
+document.getElementById(
+    "printButton"
+).addEventListener(
+    "click",
+    () => window.print()
+);
+
+
+/* -------------------------------------------------------
+   INITIALISE
+------------------------------------------------------- */
+
+addChild();
+renderClubs();
+calculateEstimate();
+
+</script>
