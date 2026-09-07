@@ -1,0 +1,594 @@
+---
+layout: default
+title: Blog Post Title
+---
+
+<style>
+/* =========================================================
+   BLOG POST TEMPLATE
+   Scoped to .jh-blog-post so it works safely with Jekyll /
+   Cayman without changing the rest of the site.
+========================================================= */
+
+.jh-blog-post {
+    --blog-green: #159957;
+    --blog-green-dark: #0f7d47;
+    --blog-green-light: #eef9f3;
+    --blog-blue: #1f6f8b;
+    --blog-text: #333;
+    --blog-muted: #68747c;
+    --blog-border: #dfe5e8;
+    --blog-code-bg: #f6f8fa;
+    --blog-warning: #fff8e5;
+    --blog-radius: 10px;
+
+    color: var(--blog-text);
+    max-width: 900px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+/* Header */
+
+.jh-blog-header {
+    margin-bottom: 30px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--blog-border);
+}
+
+.jh-blog-header h1 {
+    margin: 0 0 8px;
+    color: var(--blog-green);
+    font-size: 2.2rem;
+    line-height: 1.2;
+}
+
+.jh-blog-subtitle {
+    margin: 0 0 12px;
+    color: var(--blog-muted);
+    font-size: 1.05rem;
+}
+
+.jh-blog-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    color: var(--blog-muted);
+    font-size: 0.85rem;
+}
+
+/* Contents */
+
+.jh-blog-toc {
+    margin: 0 0 30px;
+    padding: 18px 20px;
+    background: var(--blog-green-light);
+    border: 1px solid #cfe9da;
+    border-radius: var(--blog-radius);
+}
+
+.jh-blog-toc strong {
+    display: block;
+    margin-bottom: 7px;
+    color: var(--blog-green-dark);
+}
+
+.jh-blog-toc ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+/* Content */
+
+.jh-blog-post h2 {
+    margin: 38px 0 12px;
+    padding-bottom: 6px;
+    color: var(--blog-green);
+    border-bottom: 1px solid var(--blog-border);
+    font-size: 1.55rem;
+}
+
+.jh-blog-post h3 {
+    margin: 28px 0 9px;
+    color: var(--blog-green-dark);
+    font-size: 1.2rem;
+}
+
+.jh-blog-post p {
+    margin: 0 0 16px;
+}
+
+.jh-blog-post a {
+    color: var(--blog-green-dark);
+}
+
+.jh-blog-post a:hover {
+    color: var(--blog-green);
+}
+
+.jh-blog-post ul,
+.jh-blog-post ol {
+    margin-top: 0;
+    margin-bottom: 18px;
+}
+
+/* Hero image / image placeholder */
+
+.jh-blog-image {
+    margin: 24px 0 30px;
+    border-radius: var(--blog-radius);
+    overflow: hidden;
+    border: 1px solid var(--blog-border);
+}
+
+.jh-blog-image img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.jh-blog-image-placeholder {
+    min-height: 260px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    background: #f5f7f8;
+    color: var(--blog-muted);
+    text-align: center;
+}
+
+/* Callout */
+
+.jh-blog-callout {
+    margin: 22px 0;
+    padding: 16px 18px;
+    background: var(--blog-green-light);
+    border-left: 4px solid var(--blog-green);
+    border-radius: 0 var(--blog-radius) var(--blog-radius) 0;
+}
+
+.jh-blog-callout strong {
+    color: var(--blog-green-dark);
+}
+
+/* Warning / note */
+
+.jh-blog-note {
+    margin: 22px 0;
+    padding: 16px 18px;
+    background: var(--blog-warning);
+    border-left: 4px solid #d6a52d;
+    border-radius: 0 var(--blog-radius) var(--blog-radius) 0;
+}
+
+/* Code */
+
+.jh-blog-post pre {
+    margin: 20px 0;
+    padding: 16px 18px;
+    overflow-x: auto;
+    background: var(--blog-code-bg);
+    border: 1px solid var(--blog-border);
+    border-radius: var(--blog-radius);
+    line-height: 1.55;
+    font-size: 0.9rem;
+}
+
+.jh-blog-post code {
+    font-family: Consolas, Monaco, "Courier New", monospace;
+}
+
+.jh-blog-post :not(pre) > code {
+    padding: 2px 5px;
+    background: var(--blog-code-bg);
+    border: 1px solid #e5e8eb;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+/* Simple information table */
+
+.jh-blog-table-wrapper {
+    overflow-x: auto;
+    margin: 20px 0;
+}
+
+.jh-blog-post table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.jh-blog-post th,
+.jh-blog-post td {
+    padding: 9px 11px;
+    border: 1px solid var(--blog-border);
+    text-align: left;
+}
+
+.jh-blog-post th {
+    background: var(--blog-green-light);
+    color: var(--blog-green-dark);
+}
+
+/* Quote */
+
+.jh-blog-post blockquote {
+    margin: 22px 0;
+    padding: 12px 18px;
+    color: var(--blog-muted);
+    border-left: 4px solid var(--blog-green);
+    background: #fafbfc;
+}
+
+/* Tags */
+
+.jh-blog-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid var(--blog-border);
+}
+
+.jh-blog-tag {
+    padding: 4px 9px;
+    background: var(--blog-green-light);
+    color: var(--blog-green-dark);
+    border: 1px solid #cfe9da;
+    border-radius: 20px;
+    font-size: 0.78rem;
+}
+
+/* Footer */
+
+.jh-blog-footer {
+    margin-top: 38px;
+    padding-top: 20px;
+    border-top: 1px solid var(--blog-border);
+    color: var(--blog-muted);
+    font-size: 0.85rem;
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+    .jh-blog-post {
+        width: 100%;
+    }
+
+    .jh-blog-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .jh-blog-post h2 {
+        font-size: 1.35rem;
+    }
+
+    .jh-blog-image-placeholder {
+        min-height: 180px;
+    }
+
+    .jh-blog-meta {
+        flex-direction: column;
+        gap: 3px;
+    }
+}
+
+/* Print */
+
+@media print {
+    .jh-blog-post {
+        max-width: none;
+        color: #000;
+    }
+
+    .jh-blog-toc,
+    .jh-blog-callout,
+    .jh-blog-note,
+    .jh-blog-post pre {
+        break-inside: avoid;
+    }
+
+    .jh-blog-post a {
+        color: #000;
+        text-decoration: none;
+    }
+}
+</style>
+
+
+<article class="jh-blog-post">
+
+    <!-- =====================================================
+         POST HEADER
+    ====================================================== -->
+
+    <header class="jh-blog-header">
+
+        <h1>Blog Post Title</h1>
+
+        <p class="jh-blog-subtitle">
+            A short description or introduction to the post goes here.
+        </p>
+
+        <div class="jh-blog-meta">
+            <span>📅 7 September 2026</span>
+            <span>🏷️ Development</span>
+            <span>⏱️ 5 minute read</span>
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         TABLE OF CONTENTS
+         Remove this section if the post is short.
+    ====================================================== -->
+
+    <nav class="jh-blog-toc" aria-label="Contents">
+
+        <strong>On this page</strong>
+
+        <ul>
+            <li><a href="#introduction">Introduction</a></li>
+            <li><a href="#background">Background</a></li>
+            <li><a href="#development">Development</a></li>
+            <li><a href="#result">The result</a></li>
+            <li><a href="#lessons">What I learned</a></li>
+        </ul>
+
+    </nav>
+
+
+    <!-- =====================================================
+         OPTIONAL HERO IMAGE
+    ====================================================== -->
+
+    <div class="jh-blog-image">
+
+        <!--
+            Replace this placeholder with an image.
+
+            Example:
+
+            <img src="/images/my-project.png"
+                 alt="Screenshot of my project">
+        -->
+
+        <div class="jh-blog-image-placeholder">
+            <div>
+                <strong>Image / screenshot placeholder</strong><br>
+                Add a relevant image here.
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         INTRODUCTION
+    ====================================================== -->
+
+    <section id="introduction">
+
+        <h2>Introduction</h2>
+
+        <p>
+            Start your blog post here. Briefly explain what you are
+            writing about and why you decided to build, investigate,
+            experiment with or share it.
+        </p>
+
+        <p>
+            This is a good place to give the reader enough context
+            before getting into the detail.
+        </p>
+
+    </section>
+
+
+    <!-- =====================================================
+         BACKGROUND
+    ====================================================== -->
+
+    <section id="background">
+
+        <h2>Background</h2>
+
+        <p>
+            Explain the problem, idea or circumstances that led to
+            the project.
+        </p>
+
+        <div class="jh-blog-callout">
+
+            <strong>Key point:</strong>
+
+            Use callouts like this when there is an important
+            observation, tip or piece of information that you want
+            the reader to notice.
+        </div>
+
+        <h3>The problem</h3>
+
+        <p>
+            Describe the problem you were trying to solve.
+        </p>
+
+        <ul>
+            <li>Problem or requirement one</li>
+            <li>Problem or requirement two</li>
+            <li>Problem or requirement three</li>
+        </ul>
+
+    </section>
+
+
+    <!-- =====================================================
+         DEVELOPMENT
+    ====================================================== -->
+
+    <section id="development">
+
+        <h2>Development</h2>
+
+        <p>
+            This section can contain the technical detail of the
+            project. Explain what you built and how you approached it.
+        </p>
+
+        <h3>Technology used</h3>
+
+        <div class="jh-blog-table-wrapper">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Technology</th>
+                        <th>Purpose</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>HTML</td>
+                        <td>Structure and content</td>
+                    </tr>
+                    <tr>
+                        <td>CSS</td>
+                        <td>Presentation and layout</td>
+                    </tr>
+                    <tr>
+                        <td>JavaScript</td>
+                        <td>Interactivity</td>
+                    </tr>
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <h3>Example code</h3>
+
+        <p>
+            Code blocks can be used throughout the post when you
+            want to show how something was implemented.
+        </p>
+
+<pre><code>// Example JavaScript
+
+function sayHello(name) {
+    return `Hello, ${name}!`;
+}
+
+console.log(sayHello("World"));</code></pre>
+
+
+        <div class="jh-blog-note">
+
+            <strong>Note:</strong>
+
+            Add warnings, limitations, caveats or useful implementation
+            notes here.
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         RESULT
+    ====================================================== -->
+
+    <section id="result">
+
+        <h2>The result</h2>
+
+        <p>
+            Show the finished project here. Screenshots, demonstrations,
+            links and short videos can all work well in this section.
+        </p>
+
+        <div class="jh-blog-image">
+
+            <div class="jh-blog-image-placeholder">
+                <div>
+                    <strong>Screenshot / result placeholder</strong><br>
+                    Replace this with an image of the finished project.
+                </div>
+            </div>
+
+        </div>
+
+        <p>
+            <a href="#">
+                → Try the finished project
+            </a>
+        </p>
+
+    </section>
+
+
+    <!-- =====================================================
+         LESSONS LEARNED
+    ====================================================== -->
+
+    <section id="lessons">
+
+        <h2>What I learned</h2>
+
+        <p>
+            Finish with your reflections. What worked particularly well?
+            What would you change? What did you learn while building it?
+        </p>
+
+        <ol>
+            <li>Lesson or observation one</li>
+            <li>Lesson or observation two</li>
+            <li>Lesson or observation three</li>
+        </ol>
+
+        <blockquote>
+            Add an interesting observation, quotation or final thought
+            here if appropriate.
+        </blockquote>
+
+    </section>
+
+
+    <!-- =====================================================
+         TAGS
+    ====================================================== -->
+
+    <div class="jh-blog-tags">
+
+        <span class="jh-blog-tag">Development</span>
+        <span class="jh-blog-tag">Web</span>
+        <span class="jh-blog-tag">JavaScript</span>
+
+    </div>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="jh-blog-footer">
+
+        <p>
+            Thanks for reading. Feel free to explore some of my other
+            projects and experiments.
+        </p>
+
+        <!-- Optional:
+        <p>
+            <a href="/">← Back to home</a>
+        </p>
+        -->
+
+    </footer>
+
+</article>
