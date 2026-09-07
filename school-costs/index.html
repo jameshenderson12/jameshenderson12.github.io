@@ -135,7 +135,7 @@ title: School Costs Planner
 .school-costs-app .attendance-child-copy input[type="checkbox"] { width:16px; height:16px; margin:0; cursor:pointer; accent-color:var(--scp-primary); }
 .school-costs-app .attendance-child-copy select { width:auto; min-width:105px; min-height:31px; padding:4px 7px; font-size:12px; }
 .school-costs-app .meal-checkbox { width:19px; height:19px; cursor:pointer; accent-color:var(--scp-primary); }
-.school-costs-app .acorns-select { min-width:140px; font-size:12px; }
+.school-costs-app .acorns-select { font-size:12px; } /* min-width:140px; */
 
 /* Pricing cards */
 .scp-price-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin:18px 0 22px; }
@@ -588,7 +588,7 @@ const DEFAULT_MEAL_COST = 3.55;
 
 const ACORNS_AM = {
     none: {
-        label: "No session",
+        label: "N/A",
         cost: 0
     },
     breakfast: {
@@ -603,7 +603,7 @@ const ACORNS_AM = {
 
 const ACORNS_PM = {
     none: {
-        label: "No session",
+        label: "N/A",
         cost: 0
     },
     standard: {
