@@ -4,601 +4,240 @@ title: School Costs Planner
 ---
 
 <style>
-    /* =====================================================
-       SCHOOL COSTS PLANNER
-       Styles are scoped to .school-costs-app so they don't
-       affect the rest of the Jekyll/Cayman website.
-    ===================================================== */
-
-    .school-costs-app {
-        --scp-primary: #315c7d;
-        --scp-primary-dark: #24465f;
-        --scp-primary-light: #eaf2f7;
-        --scp-accent: #5f8fa8;
-        --scp-warning: #fff4d6;
-        --scp-danger: #a94442;
-        --scp-text: #263238;
-        --scp-muted: #68747c;
-        --scp-border: #d9e0e5;
-        --scp-background: #f4f7f9;
-        --scp-white: #ffffff;
-        --scp-radius: 12px;
-        --scp-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
-
-        max-width: 1200px;
-        margin: 0 auto;
-        color: var(--scp-text);
-        line-height: 1.5;
-        font-family: Arial, Helvetica, sans-serif;
-    }
-
-    .school-costs-app *,
-    .school-costs-app *::before,
-    .school-costs-app *::after {
-        box-sizing: border-box;
-    }
-
-    /* Intro */
-
-    .scp-intro {
-        background: var(--scp-primary-light);
-        border: 1px solid #cbdde8;
-        border-left: 5px solid var(--scp-primary);
-        border-radius: var(--scp-radius);
-        padding: 20px 22px;
-        margin-bottom: 20px;
-    }
-
-    .scp-intro p {
-        margin: 0;
-        color: var(--scp-text);
-    }
-
-    .scp-intro p + p {
-        margin-top: 8px;
-    }
-
-    /* Sections */
-
-    .school-costs-app .section {
-        background: var(--scp-white);
-        border: 1px solid var(--scp-border);
-        border-radius: var(--scp-radius);
-        box-shadow: var(--scp-shadow);
-        padding: 22px;
-        margin-bottom: 18px;
-    }
-
-    .school-costs-app .section-header {
-        margin-bottom: 18px;
-    }
-
-    .school-costs-app .section-header h2 {
-        margin: 0 0 5px;
-        color: var(--scp-primary-dark);
-        font-size: 21px;
-        line-height: 1.3;
-    }
-
-    .school-costs-app .section-header p {
-        margin: 0;
-        color: var(--scp-muted);
-        font-size: 14px;
-    }
-
-    .school-costs-app .section-header p + p {
-        margin-top: 8px;
-    }
-
-    /* Fields */
-
-    .school-costs-app .field {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-    }
-
-    .school-costs-app label {
-        font-size: 13px;
-        color: var(--scp-primary-dark);
-    }
-
-    .school-costs-app input[type="text"],
-    .school-costs-app input[type="number"],
-    .school-costs-app select {
-        width: 100%;
-        min-height: 40px;
-        border: 1px solid var(--scp-border);
-        border-radius: 7px;
-        padding: 8px 10px;
-        background: var(--scp-white);
-        color: var(--scp-text);
-        font: inherit;
-    }
-
-    .school-costs-app input:focus,
-    .school-costs-app select:focus {
-        outline: 2px solid rgba(49, 92, 125, 0.18);
-        border-color: var(--scp-primary);
-    }
-
-    /* Buttons */
-
-    .school-costs-app .button {
-        border: 0;
-        border-radius: 7px;
-        padding: 9px 14px;
-        min-height: 40px;
-        font: inherit;
-        font-weight: 700;
-        cursor: pointer;
-        background: var(--scp-primary);
-        color: var(--scp-white);
-    }
-
-    .school-costs-app .button:hover {
-        background: var(--scp-primary-dark);
-    }
-
-    .school-costs-app .button-secondary {
-        background: var(--scp-primary-light);
-        color: var(--scp-primary-dark);
-    }
-
-    .school-costs-app .button-secondary:hover {
-        background: #dcebf3;
-    }
-
-    .school-costs-app .button-danger {
-        background: #f8e8e7;
-        color: var(--scp-danger);
-    }
-
-    .school-costs-app .button-danger:hover {
-        background: #f2d8d6;
-    }
-
-    .school-costs-app .button-small {
-        min-height: 36px;
-        padding: 7px 11px;
-        font-size: 13px;
-    }
-
-    /* Children */
-
-    .school-costs-app .children-list {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 12px;
-    }
-
-    .school-costs-app .child-row {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        gap: 12px;
-        padding: 16px;
-        background: #fafbfc;
-        border: 1px solid var(--scp-border);
-        border-radius: 10px;
-    }
-
-    .school-costs-app .child-name-field {
-        flex: 1;
-        min-width: 0;
-    }
-
-    .school-costs-app .child-number {
-        margin-bottom: 4px;
-        color: var(--scp-primary);
-        font-size: 12px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
-    }
-
-    .school-costs-app .child-actions {
-        flex: 0 0 auto;
-        padding-top: 22px;
-    }
-
-    .school-costs-app .children-actions {
-        margin-top: 14px;
-    }
-
-    /* Attendance */
-
-    .school-costs-app .attendance-wrapper {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-    }
-
-    .school-costs-app .attendance-table {
-        width: 100%;
-        border-collapse: collapse;
-        min-width: 720px;
-    }
-
-    .school-costs-app .attendance-table th,
-    .school-costs-app .attendance-table td {
-        border: 1px solid var(--scp-border);
-        padding: 10px;
-        text-align: center;
-        vertical-align: middle;
-    }
-
-    .school-costs-app .attendance-table th {
-        background: var(--scp-primary-light);
-        color: var(--scp-primary-dark);
-        font-size: 13px;
-    }
-
-    .school-costs-app .attendance-table th:first-child,
-    .school-costs-app .attendance-table td:first-child {
-        text-align: left;
-        min-width: 180px;
-    }
-
-    .school-costs-app .attendance-child-name,
-    .school-costs-app .attendance-card-name {
-        font-weight: 700;
-        color: var(--scp-primary-dark);
-    }
-
-    .school-costs-app .attendance-child-copy {
-        margin-top: 8px;
-    }
-
-    .school-costs-app .attendance-child-copy-inner {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        flex-wrap: wrap;
-        font-size: 13px;
-        font-weight: 600;
-        color: var(--scp-primary-dark);
-    }
-
-    .school-costs-app .attendance-child-copy input[type="checkbox"] {
-        width: 17px;
-        height: 17px;
-        margin: 0;
-        cursor: pointer;
-        flex: 0 0 auto;
-    }
-
-    .school-costs-app .attendance-child-copy select {
-        width: auto;
-        min-width: 110px;
-        min-height: 34px;
-        padding: 5px 8px;
-        font-size: 13px;
-    }
-
-    .school-costs-app .meal-checkbox {
-        width: 19px;
-        height: 19px;
-        cursor: pointer;
-    }
-
-    .school-costs-app .acorns-select {
-        min-width: 135px;
-        font-size: 13px;
-    }
-
-    /* Mobile attendance cards */
-
-    .school-costs-app .mobile-attendance {
-        display: none;
-    }
-
-    .school-costs-app .attendance-card {
-        border: 1px solid var(--scp-border);
-        border-radius: 10px;
-        padding: 14px;
-        margin-bottom: 12px;
-        background: #fafbfc;
-    }
-
-    .school-costs-app .attendance-card:last-child {
-        margin-bottom: 0;
-    }
-
-    .school-costs-app .attendance-card-name {
-        margin-bottom: 8px;
-    }
-
-    .school-costs-app .attendance-day {
-        display: grid;
-        grid-template-columns: 95px 1fr;
-        align-items: center;
-        gap: 10px;
-        padding: 7px 0;
-        border-top: 1px solid var(--scp-border);
-    }
-
-    .school-costs-app .attendance-day:first-of-type {
-        border-top: 0;
-    }
-
-    .school-costs-app .attendance-day-label {
-        font-size: 13px;
-        font-weight: 700;
-        color: var(--scp-muted);
-    }
-
-    .school-costs-app .mobile-attendance .attendance-child-copy {
-        margin-bottom: 10px;
-    }
-
-    /* Clubs */
-
-    .school-costs-app .club-list {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-    }
-
-    .school-costs-app .club-row {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) 150px minmax(180px, 220px) auto;
-        gap: 12px;
-        align-items: end;
-        padding: 14px;
-        background: #fafbfc;
-        border: 1px solid var(--scp-border);
-        border-radius: 10px;
-    }
-
-    .school-costs-app .club-actions {
-        display: flex;
-        justify-content: flex-end;
-    }
-
-    .school-costs-app .club-empty {
-        padding: 14px;
-        border: 1px dashed var(--scp-border);
-        border-radius: 9px;
-        color: var(--scp-muted);
-        font-size: 14px;
-        background: #fafbfc;
-    }
-
-    /* Period */
-
-    .school-costs-app .period-grid {
-        display: grid;
-        grid-template-columns: minmax(200px, 280px);
-        gap: 14px;
-    }
-
-    .school-costs-app .weeks-help {
-        color: var(--scp-muted);
-        font-size: 13px;
-    }
-
-    /* Estimate */
-
-    .school-costs-app .estimate-box {
-        background: var(--scp-primary-light);
-        border: 1px solid #cbdde8;
-        border-radius: 10px;
-        padding: 18px;
-    }
-
-    .school-costs-app .estimate-grid {
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 12px;
-    }
-
-    .school-costs-app .estimate-item {
-        background: var(--scp-white);
-        border: 1px solid var(--scp-border);
-        border-radius: 9px;
-        padding: 14px;
-    }
-
-    .school-costs-app .estimate-label {
-        color: var(--scp-muted);
-        font-size: 12px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.03em;
-        margin-bottom: 4px;
-    }
-
-    .school-costs-app .estimate-value {
-        color: var(--scp-primary-dark);
-        font-size: 20px;
-        font-weight: 700;
-    }
-
-    .school-costs-app .estimate-total {
-        margin-top: 14px;
-        padding: 18px;
-        border-radius: 10px;
-        background: var(--scp-primary);
-        color: var(--scp-white);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 20px;
-    }
-
-    .school-costs-app .estimate-total-label {
-        font-size: 15px;
-        font-weight: 700;
-    }
-
-    .school-costs-app .estimate-total-value {
-        font-size: 28px;
-        font-weight: 700;
-    }
-
-    .school-costs-app .actions {
-        display: flex;
-        justify-content: flex-end;
-        gap: 10px;
-        margin-top: 18px;
-    }
-
-    .school-costs-app .note {
-        padding: 12px 14px;
-        border-radius: 8px;
-        background: var(--scp-warning);
-        color: #665321;
-        font-size: 13px;
-        margin-top: 14px;
-    }
-
-    /* Mobile */
-
-    @media (max-width: 900px) {
-
-        .school-costs-app .club-row {
-            grid-template-columns: 1fr 1fr;
-        }
-
-        .school-costs-app .club-actions {
-            justify-content: flex-start;
-        }
-
-        .school-costs-app .estimate-grid {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-    }
-
-    @media (max-width: 700px) {
-
-        .school-costs-app .section {
-            padding: 16px;
-        }
-
-        .school-costs-app .children-list {
-            grid-template-columns: 1fr;
-        }
-
-        .school-costs-app .attendance-wrapper {
-            display: none;
-        }
-
-        .school-costs-app .mobile-attendance {
-            display: block;
-        }
-
-        .school-costs-app .club-row {
-            grid-template-columns: 1fr;
-        }
-
-        .school-costs-app .estimate-grid {
-            grid-template-columns: 1fr 1fr;
-        }
-    }
-
-    @media (max-width: 480px) {
-
-        .school-costs-app .child-row {
-            flex-direction: column;
-        }
-
-        .school-costs-app .child-actions {
-            padding-top: 0;
-            align-self: flex-end;
-        }
-
-        .school-costs-app .estimate-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .school-costs-app .estimate-total {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 4px;
-        }
-
-        .school-costs-app .actions {
-            flex-direction: column;
-        }
-
-        .school-costs-app .actions .button {
-            width: 100%;
-        }
-    }
-
-    /* Print */
-
-    @media print {
-
-        .school-costs-app {
-            max-width: none;
-        }
-
-        .school-costs-app .section {
-            box-shadow: none;
-            break-inside: avoid;
-        }
-
-        .school-costs-app .children-actions,
-        .school-costs-app .child-actions,
-        .school-costs-app .club-actions,
-        .school-costs-app .actions,
-        .school-costs-app .child-copy-controls {
-            display: none !important;
-        }
-
-        .school-costs-app .attendance-wrapper {
-            display: block !important;
-            overflow: visible;
-        }
-
-        .school-costs-app .mobile-attendance {
-            display: none !important;
-        }
-
-        .school-costs-app .attendance-table {
-            min-width: 0;
-        }
-
-        .school-costs-app .club-row {
-            grid-template-columns: 1fr 120px 180px;
-        }
-
-        .school-costs-app .estimate-total {
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
-        }
-
-        /*
-           Hide the Cayman site navigation/header when printing,
-           leaving the calculator as the printable document.
-        */
-        .page-header,
-        .site-footer {
-            display: none !important;
-        }
-
-        .main-content {
-            max-width: none !important;
-            padding: 0 !important;
-            margin: 0 !important;
-        }
-    }
+/* =========================================================
+   SCHOOL COSTS PLANNER
+   Scoped to .school-costs-app so the rest of the Jekyll /
+   Cayman site remains untouched.
+========================================================= */
+.school-costs-app {
+    --scp-primary: #157878;
+    --scp-primary-dark: #0e5d5d;
+    --scp-primary-light: #eaf6f5;
+    --scp-primary-soft: #f4fbfa;
+    --scp-accent: #52bad5;
+    --scp-text: #263238;
+    --scp-muted: #68747c;
+    --scp-border: #dce3e6;
+    --scp-background: #f5f7f8;
+    --scp-white: #fff;
+    --scp-success: #2f7d5a;
+    --scp-danger: #a94442;
+    --scp-warning: #fff7df;
+    --scp-radius: 14px;
+    --scp-shadow: 0 4px 18px rgba(25, 55, 65, .07);
+    color: var(--scp-text);
+    max-width: 1120px;
+    margin: 0 auto;
+    line-height: 1.5;
+    font-family: inherit;
+}
+.school-costs-app *, .school-costs-app *::before, .school-costs-app *::after { box-sizing:border-box; }
+.school-costs-app button, .school-costs-app input, .school-costs-app select { font:inherit; }
+
+/* Intro */
+.scp-intro {
+    position:relative;
+    overflow:hidden;
+    background:linear-gradient(135deg, var(--scp-primary-light), #f7fbfb);
+    border:1px solid #cfe4e2;
+    border-radius:var(--scp-radius);
+    padding:22px 24px;
+    margin-bottom:20px;
+}
+.scp-intro::after {
+    content:"£";
+    position:absolute;
+    right:22px; top:-20px;
+    font-size:120px; font-weight:800;
+    color:rgba(21,120,120,.055);
+    pointer-events:none;
+}
+.scp-intro p { margin:0; max-width:850px; position:relative; z-index:1; }
+.scp-intro p:first-child { font-size:16px; font-weight:700; color:var(--scp-primary-dark); }
+.scp-intro p + p { margin-top:6px; color:var(--scp-muted); font-size:14px; }
+
+/* Sections */
+.school-costs-app .section {
+    background:var(--scp-white);
+    border:1px solid var(--scp-border);
+    border-radius:var(--scp-radius);
+    box-shadow:var(--scp-shadow);
+    padding:24px;
+    margin-bottom:18px;
+}
+.school-costs-app .section-header { margin-bottom:18px; }
+.school-costs-app .section-header h2 {
+    display:flex; align-items:center; gap:9px;
+    margin:0 0 5px;
+    color:var(--scp-primary-dark);
+    font-size:21px; line-height:1.3;
+}
+.school-costs-app .section-header p { margin:0; color:var(--scp-muted); font-size:14px; }
+.school-costs-app .section-header p + p { margin-top:7px; }
+
+/* Fields */
+.school-costs-app .field { display:flex; flex-direction:column; gap:6px; }
+.school-costs-app label { font-size:13px; font-weight:600; color:var(--scp-primary-dark); }
+.school-costs-app input[type="text"],
+.school-costs-app input[type="number"],
+.school-costs-app select {
+    width:100%; min-height:42px; padding:8px 11px;
+    border:1px solid var(--scp-border); border-radius:8px;
+    background:#fff; color:var(--scp-text);
+    transition:border-color .15s ease, box-shadow .15s ease;
+}
+.school-costs-app input:focus, .school-costs-app select:focus {
+    outline:none; border-color:var(--scp-primary);
+    box-shadow:0 0 0 3px rgba(21,120,120,.12);
+}
+
+/* Buttons */
+.school-costs-app .button {
+    border:0; border-radius:8px; padding:9px 14px; min-height:40px;
+    cursor:pointer; background:var(--scp-primary); color:#fff;
+    font-weight:700; transition:background .15s ease, transform .08s ease;
+}
+.school-costs-app .button:hover { background:var(--scp-primary-dark); }
+.school-costs-app .button:active { transform:translateY(1px); }
+.school-costs-app .button-secondary { background:var(--scp-primary-light); color:var(--scp-primary-dark); border:1px solid #cfe4e2; }
+.school-costs-app .button-secondary:hover { background:#dcefed; }
+.school-costs-app .button-danger { background:#faeceb; color:var(--scp-danger); }
+.school-costs-app .button-danger:hover { background:#f5dddb; }
+.school-costs-app .button-small { min-height:35px; padding:7px 11px; font-size:13px; }
+
+/* Children */
+.school-costs-app .children-list { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.school-costs-app .child-row {
+    display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
+    padding:16px; background:var(--scp-primary-soft);
+    border:1px solid var(--scp-border); border-radius:11px;
+}
+.school-costs-app .child-name-field { flex:1; min-width:0; }
+.school-costs-app .child-number {
+    margin-bottom:5px; color:var(--scp-primary); font-size:11px; font-weight:800;
+    text-transform:uppercase; letter-spacing:.07em;
+}
+.school-costs-app .child-actions { flex:0 0 auto; padding-top:21px; }
+.school-costs-app .children-actions { margin-top:14px; }
+
+/* Attendance */
+.school-costs-app .attendance-wrapper { overflow-x:auto; border:1px solid var(--scp-border); border-radius:10px; }
+.school-costs-app .attendance-table { width:100%; border-collapse:separate; border-spacing:0; min-width:720px; }
+.school-costs-app .attendance-table th,
+.school-costs-app .attendance-table td { border-right:1px solid var(--scp-border); border-bottom:1px solid var(--scp-border); padding:10px; text-align:center; vertical-align:middle; }
+.school-costs-app .attendance-table th:last-child, .school-costs-app .attendance-table td:last-child { border-right:0; }
+.school-costs-app .attendance-table tbody tr:last-child td { border-bottom:0; }
+.school-costs-app .attendance-table th { background:var(--scp-primary-soft); color:var(--scp-primary-dark); font-size:12px; font-weight:800; }
+.school-costs-app .attendance-table th:first-child, .school-costs-app .attendance-table td:first-child { text-align:left; min-width:185px; }
+.school-costs-app .attendance-child-name, .school-costs-app .attendance-card-name { font-weight:800; color:var(--scp-primary-dark); }
+.school-costs-app .attendance-child-copy { margin-top:8px; }
+.school-costs-app .attendance-child-copy-inner { display:flex; align-items:center; gap:6px; flex-wrap:wrap; font-size:12px; color:var(--scp-muted); }
+.school-costs-app .attendance-child-copy input[type="checkbox"] { width:16px; height:16px; margin:0; cursor:pointer; accent-color:var(--scp-primary); }
+.school-costs-app .attendance-child-copy select { width:auto; min-width:105px; min-height:31px; padding:4px 7px; font-size:12px; }
+.school-costs-app .meal-checkbox { width:19px; height:19px; cursor:pointer; accent-color:var(--scp-primary); }
+.school-costs-app .acorns-select { min-width:140px; font-size:12px; }
+
+/* Pricing cards */
+.scp-price-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin:18px 0 22px; }
+.scp-price-card { border:1px solid var(--scp-border); border-radius:11px; padding:13px 15px; background:#fafcfc; }
+.scp-price-card strong { display:block; color:var(--scp-primary-dark); font-size:13px; margin-bottom:7px; }
+.scp-price-row { display:flex; justify-content:space-between; gap:12px; font-size:13px; padding:5px 0; border-top:1px solid #e8edef; }
+.scp-price-row:first-of-type { border-top:0; }
+.scp-price-row span:first-child { color:var(--scp-muted); }
+.scp-price-row b { white-space:nowrap; color:var(--scp-text); }
+.scp-subheading { margin:0 0 12px; color:var(--scp-primary-dark); font-size:17px; }
+.scp-subsection + .scp-subsection { margin-top:25px; padding-top:22px; border-top:1px solid var(--scp-border); }
+
+/* Mobile attendance cards */
+.school-costs-app .mobile-attendance { display:none; }
+.school-costs-app .attendance-card { border:1px solid var(--scp-border); border-radius:11px; padding:14px; margin-bottom:12px; background:#fafcfc; }
+.school-costs-app .attendance-card:last-child { margin-bottom:0; }
+.school-costs-app .attendance-card-name { margin-bottom:7px; }
+.school-costs-app .attendance-day { display:grid; grid-template-columns:95px 1fr; align-items:center; gap:10px; padding:8px 0; border-top:1px solid var(--scp-border); }
+.school-costs-app .attendance-day:first-of-type { border-top:0; }
+.school-costs-app .attendance-day-label { font-size:12px; font-weight:800; color:var(--scp-muted); }
+.school-costs-app .mobile-attendance .attendance-child-copy { margin-bottom:9px; }
+
+/* Clubs */
+.school-costs-app .club-list { display:flex; flex-direction:column; gap:10px; }
+.school-costs-app .club-row { display:grid; grid-template-columns:minmax(0,1fr) 145px minmax(170px,210px) auto; gap:11px; align-items:end; padding:14px; background:#fafcfc; border:1px solid var(--scp-border); border-radius:10px; }
+.school-costs-app .club-actions { display:flex; justify-content:flex-end; }
+.school-costs-app .club-empty { padding:15px; border:1px dashed #cbd6da; border-radius:10px; color:var(--scp-muted); font-size:13px; background:#fafcfc; }
+
+/* Period */
+.school-costs-app .period-grid { display:grid; grid-template-columns:minmax(180px,280px); gap:14px; }
+.school-costs-app .weeks-help { color:var(--scp-muted); font-size:12px; }
+
+/* Estimate */
+.school-costs-app .estimate-box { background:linear-gradient(135deg,#f0f8f7,#f7fbfb); border:1px solid #cfe4e2; border-radius:12px; padding:18px; }
+.school-costs-app .estimate-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; }
+.school-costs-app .estimate-item { background:#fff; border:1px solid var(--scp-border); border-radius:10px; padding:13px; }
+.school-costs-app .estimate-label { color:var(--scp-muted); font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:.055em; margin-bottom:4px; }
+.school-costs-app .estimate-value { color:var(--scp-primary-dark); font-size:19px; font-weight:800; }
+.school-costs-app .estimate-breakdown { margin-top:10px; display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.school-costs-app .estimate-secondary { background:rgba(255,255,255,.7); border:1px solid #d8e8e6; border-radius:10px; padding:12px 13px; }
+.school-costs-app .estimate-secondary-label { color:var(--scp-muted); font-size:11px; font-weight:700; }
+.school-costs-app .estimate-secondary-value { color:var(--scp-text); font-size:17px; font-weight:800; margin-top:2px; }
+.school-costs-app .estimate-total { margin-top:12px; padding:17px 18px; border-radius:11px; background:var(--scp-primary); color:#fff; display:flex; justify-content:space-between; align-items:center; gap:20px; }
+.school-costs-app .estimate-total-label { font-size:15px; font-weight:800; }
+.school-costs-app .estimate-total-value { font-size:29px; font-weight:800; }
+.school-costs-app .note { padding:11px 13px; border-radius:9px; background:var(--scp-warning); color:#665321; font-size:12px; margin-top:13px; border:1px solid #f0dfb4; }
+.school-costs-app .actions { display:flex; justify-content:flex-end; gap:9px; margin-top:16px; }
+
+/* Responsive */
+@media (max-width:900px) {
+    .school-costs-app .club-row { grid-template-columns:1fr 1fr; }
+    .school-costs-app .club-actions { justify-content:flex-start; }
+    .school-costs-app .estimate-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media (max-width:700px) {
+    .school-costs-app .section { padding:17px; }
+    .school-costs-app .children-list { grid-template-columns:1fr; }
+    .school-costs-app .attendance-wrapper { display:none; }
+    .school-costs-app .mobile-attendance { display:block; }
+    .school-costs-app .club-row { grid-template-columns:1fr; }
+    .school-costs-app .estimate-breakdown { grid-template-columns:1fr; }
+    .scp-price-grid { grid-template-columns:1fr; }
+}
+@media (max-width:480px) {
+    .school-costs-app .child-row { flex-direction:column; }
+    .school-costs-app .child-actions { padding-top:0; align-self:flex-end; }
+    .school-costs-app .estimate-grid { grid-template-columns:1fr 1fr; }
+    .school-costs-app .estimate-total { align-items:flex-start; }
+    .school-costs-app .estimate-total-value { font-size:25px; }
+    .school-costs-app .actions { flex-direction:column; }
+    .school-costs-app .actions .button { width:100%; }
+    .scp-intro { padding:18px; }
+}
+
+/* Print */
+@media print {
+    .school-costs-app { max-width:none; font-size:11px; }
+    .school-costs-app .section { box-shadow:none; break-inside:avoid; padding:15px; margin-bottom:12px; }
+    .school-costs-app .scp-intro { box-shadow:none; }
+    .school-costs-app .children-actions,
+    .school-costs-app .child-actions,
+    .school-costs-app .club-actions,
+    .school-costs-app .actions,
+    .school-costs-app .attendance-child-copy,
+    .school-costs-app .note { display:none !important; }
+    .school-costs-app .attendance-wrapper { display:block !important; overflow:visible; border:0; }
+    .school-costs-app .mobile-attendance { display:none !important; }
+    .school-costs-app .attendance-table { min-width:0; }
+    .school-costs-app .attendance-table th, .school-costs-app .attendance-table td { padding:6px; }
+    .school-costs-app .club-row { grid-template-columns:1fr 100px 150px; }
+    .school-costs-app .estimate-total { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    .school-costs-app .estimate-box { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    .school-costs-app .scp-price-grid { grid-template-columns:1fr 1fr; }
+}
 </style>
 
 
 <div class="school-costs-app">
 
     <div class="scp-intro">
-        <p>
-            Use this planner to estimate the cost of school meals,
-            Acorns wraparound care and additional termly clubs for your children.
-        </p>
-
-        <p>
-            Choose the arrangements that apply to each child, then select the
-            number of school weeks you would like to estimate.
-        </p>
+        <p>Plan ahead and get a quick estimate of your children's school costs.</p>
+        <p>Select the arrangements that apply to each child, add any termly clubs, and choose how many school weeks you want to include.</p>
     </div>
 
 
@@ -663,39 +302,40 @@ title: School Costs Planner
             </p>
 
             <p>
-                <strong>Breakfast Club:</strong>
-                07:30–08:45 = <strong>£5.00</strong> including breakfast,
-                or 08:15–08:45 = <strong>£3.00</strong> without breakfast.
-            </p>
-
-            <p>
-                <strong>After-School Club:</strong>
-                15:15–17:00 = <strong>£10.00</strong>,
-                or 15:15–18:00 = <strong>£12.00</strong>.
+                Select the appropriate session for each child on each day.
+                Session prices are shown below for quick reference.
             </p>
 
         </div>
 
+        <div class="scp-price-grid" aria-label="Acorns session prices">
+            <div class="scp-price-card">
+                <strong>Breakfast Club · AM</strong>
+                <div class="scp-price-row"><span>07:30–08:45 · breakfast included</span><b>£5.00</b></div>
+                <div class="scp-price-row"><span>08:15–08:45 · no breakfast</span><b>£3.00</b></div>
+            </div>
+            <div class="scp-price-card">
+                <strong>After-School Club · PM</strong>
+                <div class="scp-price-row"><span>15:15–17:00</span><b>£10.00</b></div>
+                <div class="scp-price-row"><span>15:15–18:00</span><b>£12.00</b></div>
+            </div>
+        </div>
 
-        <h3 style="margin:0 0 12px; color:#24465f; font-size:17px;">
-            Breakfast Club (AM)
-        </h3>
+        <div class="scp-subsection">
+        <h3 class="scp-subheading">Breakfast Club (AM)</h3>
 
         <div id="amDesktop" class="attendance-wrapper"></div>
 
         <div id="amMobile" class="mobile-attendance"></div>
+        </div>
 
-
-        <div style="height:24px;"></div>
-
-
-        <h3 style="margin:0 0 12px; color:#24465f; font-size:17px;">
-            After-School Club (PM)
-        </h3>
+        <div class="scp-subsection">
+        <h3 class="scp-subheading">After-School Club (PM)</h3>
 
         <div id="pmDesktop" class="attendance-wrapper"></div>
 
         <div id="pmMobile" class="mobile-attendance"></div>
+        </div>
 
     </section>
 
@@ -861,17 +501,27 @@ title: School Costs Planner
             </div>
 
 
+            <div class="estimate-breakdown">
+                <div class="estimate-secondary">
+                    <div class="estimate-secondary-label">Recurring cost for selected weeks</div>
+                    <div class="estimate-secondary-value" id="recurringTotal">£0.00</div>
+                </div>
+                <div class="estimate-secondary">
+                    <div class="estimate-secondary-label">Plus termly clubs</div>
+                    <div class="estimate-secondary-value" id="termlyClubsBreakdown">£0.00</div>
+                </div>
+            </div>
+
             <div class="estimate-total">
 
                 <div>
 
                     <div class="estimate-total-label">
-                        Estimated Total
+                        Estimated total
                     </div>
 
                     <div
                         id="estimateWeeksText"
-                        style="font-size:13px; opacity:0.9;"
                     >
                         1 school week
                     </div>
@@ -2431,6 +2081,18 @@ function calculateEstimate() {
         "grandTotal"
     ).textContent =
         money(grandTotal);
+
+    const recurringTotalElement = document.getElementById("recurringTotal");
+
+    if (recurringTotalElement) {
+        recurringTotalElement.textContent = money(recurringTotal);
+    }
+
+    const termlyClubsBreakdownElement = document.getElementById("termlyClubsBreakdown");
+
+    if (termlyClubsBreakdownElement) {
+        termlyClubsBreakdownElement.textContent = money(termlyClubs);
+    }
 
     document.getElementById(
         "estimateWeeksText"
