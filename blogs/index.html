@@ -1,1 +1,141 @@
+---
+layout: default
+title: Blog
+---
 
+<style>
+.jh-blog-index {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.jh-blog-index-header {
+    margin-bottom: 30px;
+}
+
+.jh-blog-index-header h1 {
+    color: #159957;
+}
+
+.jh-blog-index-header p {
+    color: #606c71;
+}
+
+.jh-post-list {
+    display: grid;
+    gap: 16px;
+}
+
+.jh-post-card {
+    display: block;
+    padding: 20px 22px;
+    border: 1px solid #e1e4e5;
+    border-radius: 10px;
+    background: #fff;
+    color: inherit;
+    text-decoration: none;
+    transition:
+        transform .18s ease,
+        box-shadow .18s ease,
+        border-color .18s ease;
+}
+
+.jh-post-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(21, 153, 87, .45);
+    box-shadow: 0 8px 20px rgba(0,0,0,.07);
+    text-decoration: none;
+}
+
+.jh-post-date {
+    margin-bottom: 5px;
+    color: #819198;
+    font-size: .8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+
+.jh-post-card h2 {
+    margin: 0 0 7px;
+    color: #159957;
+    font-size: 1.35rem;
+}
+
+.jh-post-card p {
+    margin: 0;
+    color: #606c71;
+    font-size: .95rem;
+}
+
+.jh-post-read {
+    display: inline-block;
+    margin-top: 12px;
+    color: #159957;
+    font-size: .85rem;
+    font-weight: 700;
+}
+
+.jh-no-posts {
+    padding: 25px;
+    border: 1px dashed #d9dfe2;
+    border-radius: 10px;
+    color: #606c71;
+    text-align: center;
+}
+</style>
+
+<div class="jh-blog-index">
+
+    <header class="jh-blog-index-header">
+
+        <h1>Blog</h1>
+
+        <p>
+            Things I've been building, experimenting with,
+            learning about and generally tinkering with.
+        </p>
+
+    </header>
+
+    <div class="jh-post-list">
+
+        {% if site.posts.size > 0 %}
+
+            {% for post in site.posts %}
+
+                <a class="jh-post-card"
+                   href="{{ post.url | relative_url }}">
+
+                    <div class="jh-post-date">
+                        {{ post.date | date: "%-d %B %Y" }}
+                        {% if post.category %}
+                            · {{ post.category }}
+                        {% endif %}
+                    </div>
+
+                    <h2>{{ post.title }}</h2>
+
+                    {% if post.description %}
+                        <p>{{ post.description }}</p>
+                    {% endif %}
+
+                    <span class="jh-post-read">
+                        Read article →
+                    </span>
+
+                </a>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="jh-no-posts">
+                No blog posts yet.
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
