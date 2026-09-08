@@ -1,0 +1,112 @@
+---
+layout: default
+---
+
+<style>
+.jh-blog {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.jh-blog-header {
+    margin-bottom: 32px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.jh-blog-header h1 {
+    margin-bottom: 8px;
+    color: #159957;
+}
+
+.jh-blog-description {
+    margin-bottom: 12px;
+    color: #606c71;
+    font-size: 1.05rem;
+}
+
+.jh-blog-meta {
+    color: #819198;
+    font-size: .85rem;
+}
+
+.jh-blog-content h2 {
+    margin-top: 38px;
+    color: #159957;
+}
+
+.jh-blog-content h3 {
+    margin-top: 28px;
+    color: #159957;
+}
+
+.jh-blog-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.jh-blog-content pre {
+    overflow-x: auto;
+    padding: 16px;
+    border-radius: 8px;
+    background: #f6f8fa;
+}
+
+.jh-blog-content code {
+    font-family: Consolas, Monaco, monospace;
+}
+
+.jh-blog-content blockquote {
+    margin: 24px 0;
+    padding: 12px 18px;
+    border-left: 4px solid #159957;
+    background: #f6faf8;
+    color: #606c71;
+}
+
+.jh-blog-back {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #e5e5e5;
+}
+
+@media (max-width: 600px) {
+    .jh-blog-header h1 {
+        font-size: 1.8rem;
+    }
+}
+</style>
+
+<article class="jh-blog">
+
+    <header class="jh-blog-header">
+
+        <h1>{{ page.title }}</h1>
+
+        {% if page.description %}
+        <p class="jh-blog-description">
+            {{ page.description }}
+        </p>
+        {% endif %}
+
+        <div class="jh-blog-meta">
+            {{ page.date | date: "%-d %B %Y" }}
+            {% if page.category %}
+                · {{ page.category }}
+            {% endif %}
+        </div>
+
+    </header>
+
+    <div class="jh-blog-content">
+        {{ content }}
+    </div>
+
+    <div class="jh-blog-back">
+        <a href="{{ '/blogs/' | relative_url }}">
+            ← Back to blog
+        </a>
+    </div>
+
+</article>
